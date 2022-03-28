@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/sad_alex/CM/lab1/Matrix.hpp
+cstdint
+-
+vector
+-
+fstream
+-
+
+/home/sad_alex/CM/lab1/MatrixFunc.hpp
+tuple
+-
+Matrix.hpp
+/home/sad_alex/CM/lab1/Matrix.hpp
+
+/home/sad_alex/CM/lab1/main.cpp
+iostream
+-
+fstream
+-
+cstring
+-
+Matrix.hpp
+/home/sad_alex/CM/lab1/Matrix.hpp
+MatrixFunc.hpp
+/home/sad_alex/CM/lab1/MatrixFunc.hpp
+

@@ -1,0 +1,3 @@
+/home/sad_alex/CM/lab1/CMakeFiles/rebuild_cache.dir
+/home/sad_alex/CM/lab1/CMakeFiles/edit_cache.dir
+/home/sad_alex/CM/lab1/CMakeFiles/main.dir

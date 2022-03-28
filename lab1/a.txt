@@ -1,0 +1,22 @@
+Enter matrix 4x4:
+Enter vector: 
+----------SOLVING SLAE----------
+----CREATING LU DECOMPOSITION---
+--------------DONE--------------
+
+Matrix L:
+1 0 0 0
+0.14 1 0 0
+1.1 0.68 1 0
+-0 0 0.88 1
+
+Matrix U:
+-7 -2 -1 -4
+0 6.3 0.14 -3.4
+0 0 -8 3.9
+0 0 0 -2.4
+
+
+Vector y: -12 24 49 6.3 
+
+Vector x: 3.5 2.5 -7.4 -2.6 
