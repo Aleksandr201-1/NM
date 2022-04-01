@@ -1,0 +1,16 @@
+Enter matrix 4x4:
+Enter vector: 
+----------SOLVING SLAE----------
+Ax = b
+
+Matrix A:
+-7.00 -2.00 -1.00 0.00
+-1.00 6.00 0.00 -4.00
+-8.00 2.00 -9.00 -3.00
+0.00 0.00 -7.00 1.00
+
+Vector b: -12.00 22.00 51.00 49.00
+-------CREATING A' MATRIX-------
+Swaping rows 0 and 2
+Swaping rows 2 and 3
+Can't create matrix A'. Stop working

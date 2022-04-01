@@ -7,11 +7,8 @@
 void usage () {
     std::cout << "Usage:\n\
 --help, -h\t\t\tshow the usage\n\
---report-rate, -r [ARG]\t\tsss\n\
-\tnone - \t\t\tno need to report anything\n\
-\tlow - \t\t\treporting only\n\
-\thigh - \t\t\treport everything\n\
 --input, -i [X]\t\t\tuse file X with ready to use data (matrix and vector)\n\
+--output, -o [X]\t\t\tuse file X for output\n\
 --method, -m [ARG]\t\tuse method ARG for solution\n\
 \tLU - \n\
 \t? - \n\
@@ -24,27 +21,15 @@ int main (int argc, char *argv[]) {
     std::string input, output;
     std::fstream output_file, input_file;
     Method method = LU_METHOD;
-    ReportRate rate = NONE;
     for (uint64_t i = 1; i < argc; ++i) {
-        if (!strcmp(argv[i], "--report-rate") || !strcmp(argv[i], "-r")) {
-            if (i + 1 >= argc) {
-                usage();
-                return 2;
-            } else if (!strcmp(argv[i + 1], "none")) {
-                rate = NONE;
-            } else if (!strcmp(argv[i + 1], "low")) {
-                rate = REPORT_LOW;
-            } else if (!strcmp(argv[i + 1], "high")) {
-                rate = REPORT_HIGH;
-            }
-            ++i;
-        } else if (!strcmp(argv[i], "--method") || !strcmp(argv[i], "-m")) {
+        if (!strcmp(argv[i], "--method") || !strcmp(argv[i], "-m")) {
             if (i + 1 >= argc) {
                 usage();
                 return 2;
             } else if (!strcmp(argv[i + 1], "LU")) {
                 method = LU_METHOD;
-                if (method) {}
+            } else if (!strcmp(argv[i + 1], "RUN")) {
+                method = RUN_METHOD;
             }
             ++i;
         } else if (!strcmp(argv[i], "--input") || !strcmp(argv[i], "-i")) {
@@ -73,6 +58,7 @@ int main (int argc, char *argv[]) {
         }
     }
     std::cout.precision(2);
+    std::cout.setf(std::ios_base::fixed);
 
     if (input != "") {
         input_file.open(input, std::ios::in);
@@ -93,12 +79,7 @@ int main (int argc, char *argv[]) {
         std::cin >> answers[i];
     }
     std::cout << "\n";
-    std::vector<double> x = solveSLAE(method, matrix, answers, rate);
-    std::cout << "\nVector x: ";
-    for (uint64_t i = 0; i < x.size(); ++i) {
-        std::cout << x[i] << " ";
-    }
-    std::cout << "\n";
+    solveSLAE(method, matrix, answers);
 
     if (input != "") {
         input_file.close();

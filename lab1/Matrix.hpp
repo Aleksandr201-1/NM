@@ -65,6 +65,8 @@ class Matrix {
         T at (uint64_t i, uint64_t j) const;
         //получение элемента по индексу
         T &operator() (uint64_t i, uint64_t j);
+        //получение элемента по индексу
+        T operator() (uint64_t i, uint64_t j) const;
         //добавить столбец
         void addCol (uint64_t i, const std::vector<T> &vec);
         //добавить строку
@@ -312,6 +314,15 @@ T Matrix<T>::at (uint64_t i, uint64_t j) const {
 //получение элемента по индексу
 template <class T>
 T &Matrix<T>::operator() (uint64_t i, uint64_t j) {
+    if (i >= n || j >= m) {
+        std::logic_error("Matrix: out of range");
+    }
+    return buff[i * m + j];
+}
+
+//получение элемента по индексу
+template <class T>
+T Matrix<T>::operator() (uint64_t i, uint64_t j) const {
     if (i >= n || j >= m) {
         std::logic_error("Matrix: out of range");
     }

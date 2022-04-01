@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/sad_alex/CM/lab1/Matrix.hpp
+/home/sad_alex/NM/lab1/Matrix.hpp
 cstdint
 -
 vector
@@ -14,13 +14,17 @@ vector
 fstream
 -
 
-/home/sad_alex/CM/lab1/MatrixFunc.hpp
+/home/sad_alex/NM/lab1/MatrixFunc.hpp
 tuple
 -
+limits
+-
+cmath
+-
 Matrix.hpp
-/home/sad_alex/CM/lab1/Matrix.hpp
+/home/sad_alex/NM/lab1/Matrix.hpp
 
-/home/sad_alex/CM/lab1/main.cpp
+/home/sad_alex/NM/lab1/main.cpp
 iostream
 -
 fstream
@@ -28,7 +32,7 @@ fstream
 cstring
 -
 Matrix.hpp
-/home/sad_alex/CM/lab1/Matrix.hpp
+/home/sad_alex/NM/lab1/Matrix.hpp
 MatrixFunc.hpp
-/home/sad_alex/CM/lab1/MatrixFunc.hpp
+/home/sad_alex/NM/lab1/MatrixFunc.hpp
 

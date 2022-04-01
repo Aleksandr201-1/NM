@@ -1,0 +1,74 @@
+#ifndef RUN_HPP
+#define RUN_HPP
+
+#include <iostream>
+#include "Matrix.hpp"
+
+template <class T>
+bool checkIf3Diagonal (const Matrix<T> &m) {
+    std::cout << "---CHECKING IF NOT 3-DIAGONAL---\n";
+    uint64_t n = m.size().first;
+    T null = T(0);
+    for (uint64_t i = 0; i < n; ++i) {
+        for (uint64_t j = 0; j < 1; ++j) {
+            if (is_equal(m(i, j), null)) {
+                std::cout << "NOT OK\n";
+                std::cout << "--------------DONE--------------\n";
+                return false;
+            }
+        }
+        for (uint64_t j = 0; j < 1; ++j) {
+            if (1) {
+                std::cout << "NOT OK\n";
+                std::cout << "--------------DONE--------------\n";
+                return false;
+            }
+        }
+    }
+    std::cout << "OK\n";
+    std::cout << "--------------DONE--------------\n";
+    return true;
+}
+
+template <class T>
+void RUNsolveSLAE (const Matrix<T> &m, const std::vector<T> &ans) {
+    uint64_t n = m.size().first;
+    std::vector<T> P(n), Q(n), x(n);
+
+    std::cout << "Matrix A:\n" << m << "\n";
+    std::cout << "Vector b':";
+    for (uint64_t i = 0; i < ans.size(); ++i) {
+        std::cout << " " << ans[i];
+    }
+    std::cout << "\n\n";
+
+    T a = 0, b = m(0, 0), c = m(0, 1), d = ans[0];
+    P[0] = -c / b;
+    Q[0] = d / b;
+    std::cout << "Iteration 0:\nP[0] = -c[0] / b[0] = " << P[0] << "\nQ[0] = d[0] / b[0] = " << Q[0] << "\n";
+    for (uint64_t i = 1; i < n; ++i) {
+        a = m(i, i - 1);
+        b = m(i, i);
+        c = i + 1 < n ? m(i, i + 1) : 0;
+        d = ans[i];
+        P[i] = -c / (b + a * P[i - 1]);
+        Q[i] = (d - a * Q[i - 1]) / (b + a * P[i - 1]);
+        std::cout << "Iteration " << i << ":\nP[" << i << "] = -c[" << i << "] / (b[" << i << "] + a[" << i << "] * P[" << i - 1 << "]) = " << P[i] << "\n"; 
+        std::cout << "Q[" << i << "] = (d[" << i << "] - a[" << i << "] * Q[" << i - 1 << "]) / (b[" << i << "] + a[" << i << "] * P[" << i - 1 << "]) = " << Q[i] << "\n";
+    }
+    x[n - 1] = Q[n - 1];
+    std::cout << "Solving x:\nx[" << n - 1 << "] = " << Q[n - 1] << "\n";
+    for (uint64_t i = n - 2; i < n; --i) {
+        x[i] = P[i] * x[i + 1] + Q[i];
+        std::cout << "x[" << i << "] = P[" << i << "] * x[" << i + 1 << "] + Q[" << i << "] = " << x[i] << "\n";
+    }
+    std::cout << "\n"; 
+
+    std::cout << "Vector x:";
+    for (uint64_t i = 0; i < x.size(); ++i) {
+        std::cout << " " << x[i];
+    }
+    std::cout << "\n";
+}
+
+#endif
