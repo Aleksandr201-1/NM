@@ -11,8 +11,9 @@ void usage () {
 --output, -o [X]\t\t\tuse file X for output\n\
 --method, -m [ARG]\t\tuse method ARG for solution\n\
 \tLU - \n\
-\t? - \n\
-\t? - \n\
+\tRUN - \n\
+\tYAKOBI - \n\
+\tZEIDEL - \n\
 \t? - \n\
 \t? - \n";
 }
@@ -22,17 +23,24 @@ int main (int argc, char *argv[]) {
     std::fstream output_file, input_file;
     Method method = LU_METHOD;
     for (uint64_t i = 1; i < argc; ++i) {
-        if (!strcmp(argv[i], "--method") || !strcmp(argv[i], "-m")) {
+        std::string str(argv[i]);
+        if (str == "--method" || str =="-m") {
             if (i + 1 >= argc) {
                 usage();
                 return 2;
-            } else if (!strcmp(argv[i + 1], "LU")) {
+            }
+            std::string tmp(argv[i + 1]);
+            if (tmp == "LU") {
                 method = LU_METHOD;
-            } else if (!strcmp(argv[i + 1], "RUN")) {
+            } else if (tmp == "RUN") {
                 method = RUN_METHOD;
+            } else if (tmp == "YAKOBI") {
+                method = SI_YAKOBI_METHOD;
+            } else if (tmp == "ZEIDEL") {
+                method = SI_ZEIDEL_METHOD;
             }
             ++i;
-        } else if (!strcmp(argv[i], "--input") || !strcmp(argv[i], "-i")) {
+        } else if (str == "--input" || str == "-i") {
             if (i + 1 >= argc) {
                 usage();
                 return 2;
@@ -40,7 +48,7 @@ int main (int argc, char *argv[]) {
                 input = argv[i + 1];
             }
             ++i;
-        } else if (!strcmp(argv[i], "--output") || !strcmp(argv[i], "-o")) {
+        } else if (str == "--output" || str == "-o") {
             if (i + 1 >= argc) {
                 usage();
                 return 2;
@@ -48,7 +56,7 @@ int main (int argc, char *argv[]) {
                 output = argv[i + 1];
             }
             ++i;
-        } else if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
+        } else if (str == "--help" || str == "-h") {
             usage();
             return 0;
         } else {
@@ -69,10 +77,15 @@ int main (int argc, char *argv[]) {
         std::cout.rdbuf(output_file.rdbuf());
     }
 
-    Matrix<double> matrix(4, 4);
-    std::vector<double> answers(4, 0);
+    uint64_t n = 0;
+    std::cout << "Enter matrix size: ";
+    std::cin >> n;
+    std::cout << "\n";
 
-    std::cout << "Enter matrix 4x4:\n";
+    Matrix<double> matrix(n, n);
+    std::vector<double> answers(n, 0);
+
+    std::cout << "Enter matrix " << n << "x" << n << ":\n";
     std::cin >> matrix;
     std::cout << "Enter vector: ";
     for (uint64_t i = 0; i < answers.size(); ++i) {

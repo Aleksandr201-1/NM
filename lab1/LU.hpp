@@ -1,17 +1,14 @@
 #ifndef LU_HPP
 #define LU_HPP
 
-#include <iostream>
-#include <tuple>
-#include <limits>
-#include <cmath>
 #include "Matrix.hpp"
+#include "General.hpp"
 
 template <class T>
 void chooseMainEl (Matrix<T> &m, std::vector<T> &b) {
     std::cout << "-------CREATING A' MATRIX-------\n";
     uint64_t n = m.size().first;
-    bool exit = false;
+    //bool exit = false;
     for (uint64_t i = 0; i < n; ++i) {
         T max = 0;
         uint64_t index = n;

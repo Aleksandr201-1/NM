@@ -1,0 +1,44 @@
+Enter matrix size: 
+Enter matrix 3x3:
+Enter vector: 
+----------SOLVING SLAE----------
+Enter approximation: 
+Creating matrix 'alpha' and vector 'beta'
+alpha(0, 1) = -A(0, 1) / A(0, 0)
+alpha(0, 2) = -A(0, 2) / A(0, 0)
+beta[0] = b[0] / A(0, 0)
+alpha(1, 0) = -A(1, 0) / A(1, 1)
+alpha(1, 2) = -A(1, 2) / A(1, 1)
+beta[1] = b[1] / A(1, 1)
+alpha(2, 0) = -A(2, 0) / A(2, 2)
+alpha(2, 1) = -A(2, 1) / A(2, 2)
+beta[2] = b[2] / A(2, 2)
+Matrix alpha:
+0.00 -0.10 -0.10
+-0.20 0.00 -0.10
+-0.20 -0.20 0.00
+Vector beta: 1.20 1.30 1.40
+
+Iteration 0:
+Vector x: 1.20 1.30 1.40
+-----Simple Iteration Normal----
+Line 0, Sum 0.20
+Line 1, Sum 0.30
+Line 2, Sum 0.40
+Choosing 0.40
+--------------DONE--------------
+Iteration 1:
+Vector x: 0.93 0.92 0.90
+E = 0.33
+Iteration 2:
+Vector x: 1.02 1.02 1.03
+E = 0.09
+Iteration 3:
+Vector x: 0.99 0.99 0.99
+E = 0.03
+Iteration 4:
+Vector x: 1.00 1.00 1.00
+E = 0.01
+Final answer:
+Vector x: 1.00 1.00 1.00
+--------------DONE--------------

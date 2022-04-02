@@ -1,8 +1,8 @@
 #ifndef RUN_HPP
 #define RUN_HPP
 
-#include <iostream>
 #include "Matrix.hpp"
+#include "General.hpp"
 
 template <class T>
 bool checkIf3Diagonal (const Matrix<T> &m) {

@@ -6,6 +6,22 @@
 
 #IncludeRegexTransform: 
 
+/home/sad_alex/NM/lab1/General.hpp
+iostream
+-
+tuple
+-
+limits
+-
+cmath
+-
+
+/home/sad_alex/NM/lab1/LU.hpp
+Matrix.hpp
+/home/sad_alex/NM/lab1/Matrix.hpp
+General.hpp
+/home/sad_alex/NM/lab1/General.hpp
+
 /home/sad_alex/NM/lab1/Matrix.hpp
 cstdint
 -
@@ -15,14 +31,24 @@ fstream
 -
 
 /home/sad_alex/NM/lab1/MatrixFunc.hpp
-tuple
--
-limits
--
-cmath
--
+LU.hpp
+/home/sad_alex/NM/lab1/LU.hpp
+RUN.hpp
+/home/sad_alex/NM/lab1/RUN.hpp
+SI.hpp
+/home/sad_alex/NM/lab1/SI.hpp
+
+/home/sad_alex/NM/lab1/RUN.hpp
 Matrix.hpp
 /home/sad_alex/NM/lab1/Matrix.hpp
+General.hpp
+/home/sad_alex/NM/lab1/General.hpp
+
+/home/sad_alex/NM/lab1/SI.hpp
+Matrix.hpp
+/home/sad_alex/NM/lab1/Matrix.hpp
+General.hpp
+/home/sad_alex/NM/lab1/General.hpp
 
 /home/sad_alex/NM/lab1/main.cpp
 iostream

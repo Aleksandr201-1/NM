@@ -3,30 +3,25 @@
 
 #include "LU.hpp"
 #include "RUN.hpp"
-#include "SimpleIteration.hpp"
-
-enum Method {
-    LU_METHOD,
-    RUN_METHOD,
-    SIMPLE_ITERATION_METHOD,
-    ZEIDEL_METHOD,
-    SPIN_METHOD,
-    QR_METHOD
-};
-
-bool is_equal(double x, double y) {
-    return std::fabs(x - y) < std::numeric_limits<double>::epsilon();
-}
+#include "SI.hpp"
 
 template <class T>
 void solveSLAE (Method method, const Matrix<T> &matrix, const std::vector<T> &b) {
     std::cout << "----------SOLVING SLAE----------\n";
+    T approx = 1;
     switch (method) {
         case LU_METHOD:
             LUsolveSLAE(matrix, b);
             break;
         case RUN_METHOD:
             RUNsolveSLAE(matrix, b);
+            break;
+        case SI_YAKOBI_METHOD:
+        case SI_ZEIDEL_METHOD:
+            std::cout << "Enter approximation: ";
+            std::cin >> approx;
+            std::cout << "\n";
+            SISolveSLAE(matrix, b, approx, method);
             break;
         default:
             break;

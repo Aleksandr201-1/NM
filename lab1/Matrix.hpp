@@ -6,6 +6,10 @@
 #include <vector>
 #include <fstream>
 
+struct MatrixSize {
+    uint64_t n, m;
+};
+
 template <class T>
 class Matrix {
     public:
