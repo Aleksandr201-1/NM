@@ -15,10 +15,10 @@ limits
 -
 cmath
 -
-
-/home/sad_alex/NM/lab1/LU.hpp
 Matrix.hpp
 /home/sad_alex/NM/lab1/Matrix.hpp
+
+/home/sad_alex/NM/lab1/LU.hpp
 General.hpp
 /home/sad_alex/NM/lab1/General.hpp
 
@@ -37,16 +37,24 @@ RUN.hpp
 /home/sad_alex/NM/lab1/RUN.hpp
 SI.hpp
 /home/sad_alex/NM/lab1/SI.hpp
+SPIN.hpp
+/home/sad_alex/NM/lab1/SPIN.hpp
+QR.hpp
+/home/sad_alex/NM/lab1/QR.hpp
+
+/home/sad_alex/NM/lab1/QR.hpp
+General.hpp
+/home/sad_alex/NM/lab1/General.hpp
 
 /home/sad_alex/NM/lab1/RUN.hpp
-Matrix.hpp
-/home/sad_alex/NM/lab1/Matrix.hpp
 General.hpp
 /home/sad_alex/NM/lab1/General.hpp
 
 /home/sad_alex/NM/lab1/SI.hpp
-Matrix.hpp
-/home/sad_alex/NM/lab1/Matrix.hpp
+General.hpp
+/home/sad_alex/NM/lab1/General.hpp
+
+/home/sad_alex/NM/lab1/SPIN.hpp
 General.hpp
 /home/sad_alex/NM/lab1/General.hpp
 
@@ -55,10 +63,6 @@ iostream
 -
 fstream
 -
-cstring
--
-Matrix.hpp
-/home/sad_alex/NM/lab1/Matrix.hpp
 MatrixFunc.hpp
 /home/sad_alex/NM/lab1/MatrixFunc.hpp
 

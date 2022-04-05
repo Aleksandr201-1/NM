@@ -27,7 +27,7 @@ class Matrix {
         ~Matrix () = default;
 
         //текущие размеры матрицы
-        std::pair<uint64_t, uint64_t> size () const;
+        MatrixSize size () const;
         //изменение размеров матрицы
         void resize (uint64_t newN, uint64_t newM, T el = 0);
 
@@ -42,6 +42,8 @@ class Matrix {
         friend const Matrix<N> operator- (const Matrix<N> &m1, const Matrix<N> &m2);
         template <class N>
         friend const Matrix<N> operator* (const Matrix<N> &m1, const Matrix<N> &m2);
+        //template <class N>
+        //friend const N operator* (const Matrix<N> &m1, const Matrix<N> &m2);
         template <class N, class V>
         friend const Matrix<N> operator* (const Matrix<N> &m1, const V &m2);
         template <class N, class V>
@@ -64,6 +66,8 @@ class Matrix {
         bool isSquare () const;
         //проверка матрицы на диагональность
         bool isDiagonal () const;
+        //проверка матрицы на симметричность
+        bool isSymmetric () const;
     
         //получение элемента по индексу
         T at (uint64_t i, uint64_t j) const;
@@ -135,7 +139,7 @@ Matrix<T>::Matrix (uint64_t n, uint64_t m, const std::vector<T> &vec) : buff(vec
 
 //текущие размеры матрицы
 template <class T>
-std::pair<uint64_t, uint64_t> Matrix<T>::size () const {
+MatrixSize Matrix<T>::size () const {
     return {n, m};
 }
 
@@ -211,14 +215,30 @@ const Matrix<T> operator* (const Matrix<T> &m1, const Matrix<T> &m2) {
     for (uint64_t i = 0; i < ans.n; ++i) {
         for (uint64_t j = 0; j < ans.m; ++j) {
             T el = 0;
-            for(uint64_t k = 0; k < m1.n; ++k) {
-                el += m1.buff[i * m1.m + k] * m2.buff[k * m2.n + j];
+            for(uint64_t k = 0; k < m1.m; ++k) {
+                el += m1.buff[i * m1.m + k] * m2.buff[k * m2.m + j];
             }
             ans.buff[i * ans.m + j] = el;
         }
     }
     return ans;
 }
+
+// //умножение вектора-строки на вектор-столбец
+// template <class T>
+// const T operator* (const Matrix<T> &m1, const Matrix<T> &m2) {
+//     if (m1.m != m2.n) {
+//         throw std::logic_error("Matrices have different sizes");
+//     }
+//     if (m1.n != m2.m || m1.n != 1) {
+//         throw std::logic_error("Matrices are not vectors");
+//     }
+//     T ans = 0;
+//     for(uint64_t i = 0; i < m1.m; ++i) {
+//         ans += m1.buff[i] * m2.buff[i];
+//     }
+//     return ans;
+// }
 
 //умножение матрицы на число
 template <class T, class V>
@@ -301,6 +321,22 @@ bool Matrix<T>::isDiagonal () const {
             if (buff[i * n + j] != null || buff[j * n + i] != null) {
                 return false;
             } 
+        }
+    }
+    return true;
+}
+
+//проверка матрицы на симметричность
+template <class T>
+bool Matrix<T>::isSymmetric () const {
+    if (n != m) {
+        return false;
+    }
+    for (uint64_t i = 0; i < n; ++i) {
+        for (uint64_t j = 1; j < n - i; ++j) {
+            if (buff[i * n + j] != buff[j * n + i]) {
+                return false;
+            }
         }
     }
     return true;

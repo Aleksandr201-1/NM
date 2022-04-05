@@ -1,66 +1,50 @@
 #ifndef LU_HPP
 #define LU_HPP
 
-#include "Matrix.hpp"
 #include "General.hpp"
 
 template <class T>
-void chooseMainEl (Matrix<T> &m, std::vector<T> &b) {
-    std::cout << "-------CREATING A' MATRIX-------\n";
-    uint64_t n = m.size().first;
-    //bool exit = false;
+bool chooseMainEl (Matrix<T> &matrix, std::vector<T> &b) {
+    std::cout << "=======CREATING A' MATRIX=======\n";
+    uint64_t n = matrix.size().n;
+    bool result = true;
     for (uint64_t i = 0; i < n; ++i) {
-        T max = 0;
-        uint64_t index = n;
-        for (uint64_t j = i; j < n; ++j) {
-            if (std::abs(m(j, i)) > std::abs(max)) {
-                max = m(j, i);
-                index = j;
+        if (matrix(i, i) == null) {
+            uint64_t j = i + 1;
+            while (j > i && matrix(i, j) == null) {
+                --j;
             }
+            if (j == i) {
+                j = 0;
+                while (j < n && matrix(i, j) == null && matrix(j, i) == null) {
+                    ++j;
+                }
+                if (j == n) {
+                    result = false;
+                    break;
+                }
+            }
+            matrix.swapRows(i, j);
+            std::swap(b[i], b[j]);
+            std::cout << "Swaping rows " << i << " and " << j << "\n";
         }
-        if (index == n && i != n - 1) {
-            std::cout << "Can't create matrix A'. Stop working\n";
-            exit(1);
-        }
-        if (index != i && i != n - 1) {
-            m.swapRows(i, index);
-            std::swap(b[i], b[index]);
-            std::cout << "Swaping rows " << i << " and " << index << "\n";
-        }
-        // if (m(i, i) == null) {
-        //     uint64_t j = 0;
-        //     while (j < n && m(i, j) == null && m(j, i) == null) {
-        //         ++j;
-        //     }
-        //     if (j == n) {
-        //         std::cout << "Can't create matrix A'. Stop working\n";
-        //         exit(1);
-        //     }
-        //     m.swapRows(i, j);
-        //     std::swap(b[i], b[j]);
-        //     std::cout << "Swaping rows " << i << " and " << j << "\n";
-        // }
     }
-    std::cout << "--------------DONE--------------\n";
+    std::cout << "==============DONE==============\n";
+    return result;
 }
 
 template <class T>
-std::tuple<Matrix<T>, Matrix<T>> LU (const Matrix<T> &m) {
-    std::cout << "----CREATING LU DECOMPOSITION---\n";
-    if (!m.isSquare() || is_equal(m.det(), T(0))) {
+std::tuple<Matrix<T>, Matrix<T>> LU (const Matrix<T> &matrix) {
+    std::cout << "====CREATING LU DECOMPOSITION===\n";
+    if (!matrix.isSquare() || is_equal(matrix.det(), T(0))) {
         return std::make_tuple(Matrix<T>(0), Matrix<T>(0));
     }
-    uint64_t n = m.size().first;
+    uint64_t n = matrix.size().n;
     Matrix<T> L(n);
-    Matrix<T> U(m);
-    std::cout << "A = LU\nL = E\nU = A\n\nMatrix L:\n" << L << "\nMatrix U:\n" << U << "\n";//<< "\nIteration 0:\n";
-    // for(uint64_t i = 0; i < n; ++i) {
-    //     for(uint64_t j = i; j < n; ++j) {
-    //         L(j, i) = U(j, i) / U(i, i);
-    //         std::cout << "L(" << j << ", " << i << ") = U(" << j << ", " << i << ") / U(" << i << ", " << i << ") = " << L(j, i) << "\n";
-    //     }
-    // }
+    Matrix<T> U(matrix);
+    std::cout << "A = LU\nL = E\nU = A\n\nMatrix L:\n" << L << "\nMatrix U:\n" << U << "\n";
     for(uint64_t k = 1; k < n; ++k) {
+        std::cout << "------------\n";
         std::cout << "Iteration " << k << ":\n";
         for(uint64_t i = k - 1; i < n; ++i) {
             for(uint64_t j = i; j < n; ++j) {
@@ -76,33 +60,37 @@ std::tuple<Matrix<T>, Matrix<T>> LU (const Matrix<T> &m) {
             }
         }
     }
-    std::cout << "--------------DONE--------------\n";
+    std::cout << "==============DONE==============\n";
     return std::make_tuple(L, U);
 }
 
 template <class T>
-void LUsolveSLAE (const Matrix<T> &m, const std::vector<T> &ans) {
-    std::cout << "Ax = b\n\nMatrix A:\n" << m << "\nVector b:";
-    for (uint64_t i = 0; i < ans.size(); ++i) {
-        std::cout << " " << ans[i];
-    }
+void LUsolveSLAE (const Matrix<T> &matrix, const std::vector<T> &ans) {
+    uint64_t n = matrix.size().n;
+    std::cout << "Ax = b\n\nMatrix A:\n" <<matrix<< "\n";
+    printVector("b", ans);
     std::cout << "\n";
-    if (!m.isSquare() || m.size().first != ans.size()) {
+
+    if (!matrix.isSquare() || n != ans.size()) {
         std::cout << "Matrix is not square. Stop working.\n";
         return;
     }
-
-    Matrix<T> A(m);
-    std::vector<T> b(ans);
-    chooseMainEl(A, b);
-    std::cout << "Matrix A':\n" << A << "\n";
-    std::cout << "Vector b':";
-    for (uint64_t i = 0; i < b.size(); ++i) {
-        std::cout << " " << b[i];
+    if (n != ans.size()) {
+        std::cout << "Matrix and vector have different sizes. Stop working.\n";
+        return;
     }
-    std::cout << "\n\n";
 
-    uint64_t n = m.size().first;
+    Matrix<T> A(matrix);
+    std::vector<T> b(ans);
+    if (!chooseMainEl(A, b)) {
+        std::cout << "Can't choose main element for matrix A. Stop working\n";
+        return;
+    }
+
+    std::cout << "Matrix A':\n" << A << "\n";
+    printVector("b", b);
+    std::cout << "\n";
+
     std::vector<T> x(n, T(0)), y(n, T(0));
     Matrix<T> L, U;
     std::tie(L, U) = LU(A);
@@ -121,12 +109,8 @@ void LUsolveSLAE (const Matrix<T> &m, const std::vector<T> &ans) {
         std::cout << " = " << y[i] << "\n";
     }
     std::cout << "\n";
-
-    std::cout << "Vector y:";
-    for (uint64_t i = 0; i < y.size(); ++i) {
-        std::cout << " " << y[i];
-    }
-    std::cout << "\n\n";
+    printVector("y", y);
+    std::cout << "\n";
 
     x[n - 1] = y[n - 1] / U(n - 1, n - 1);
     std::cout << "x[" << n - 1 << "] = y[" << n - 1 << "] / U(" << n - 1 << ", " << n - 1 << ") = " << x[n - 1] << "\n";
@@ -141,12 +125,8 @@ void LUsolveSLAE (const Matrix<T> &m, const std::vector<T> &ans) {
         std::cout << ") / U(" << i << " ," << i << ") = " << x[i] << "\n";
     }
     std::cout << "\n";
-
-    std::cout << "Vector x:";
-    for (uint64_t i = 0; i < x.size(); ++i) {
-        std::cout << " " << x[i];
-    }
-    std::cout << "\n\n";
+    printVector("x", x);
+    std::cout << "\n";
 
     std::cout << "det(A) = 1 ";
     T det = 1;
@@ -155,6 +135,9 @@ void LUsolveSLAE (const Matrix<T> &m, const std::vector<T> &ans) {
         std::cout << " * U(" << i << ", " << i << ")";
     }
     std::cout << " = " << det << "\n";
+
+    std::cout << "Finding reverse matrix Ar\nLUAr = E\nLY = E\nUAr = Y\n";
+    Matrix<T> Ar(A), Y(n);
 }
 
 #endif

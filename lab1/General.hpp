@@ -5,6 +5,7 @@
 #include <tuple>
 #include <limits>
 #include <cmath>
+#include "Matrix.hpp"
 
 enum Method {
     LU_METHOD,
@@ -15,15 +16,16 @@ enum Method {
     QR_METHOD
 };
 
-bool is_equal(double x, double y) {
-    return std::fabs(x - y) < std::numeric_limits<double>::epsilon();
+template <class T>
+bool is_equal(T x, T y) {
+    return std::fabs(x - y) < std::numeric_limits<T>::epsilon();
 }
 
 template <class T>
 void printVector (const std::string &name, const std::vector<T> &vec) {
     std::cout << "Vector " << name << ":";
-    for (uint64_t i = 0; i < vec.size(); ++i) {
-        std::cout << " " << vec[i];
+    for (auto el : vec) {
+        std::cout << " " << el;
     }
     std::cout << "\n";
 }

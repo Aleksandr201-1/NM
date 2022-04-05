@@ -1,0 +1,4 @@
+Enter matrix size: 
+Enter matrix 3x3:
+----------SOLVING SLAE----------
+Enter approximation: 

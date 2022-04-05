@@ -5,7 +5,9 @@ CMakeFiles/main.dir/main.cpp.o: General.hpp
 CMakeFiles/main.dir/main.cpp.o: LU.hpp
 CMakeFiles/main.dir/main.cpp.o: Matrix.hpp
 CMakeFiles/main.dir/main.cpp.o: MatrixFunc.hpp
+CMakeFiles/main.dir/main.cpp.o: QR.hpp
 CMakeFiles/main.dir/main.cpp.o: RUN.hpp
 CMakeFiles/main.dir/main.cpp.o: SI.hpp
+CMakeFiles/main.dir/main.cpp.o: SPIN.hpp
 CMakeFiles/main.dir/main.cpp.o: main.cpp
 

@@ -1,7 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <cstring>
-#include "Matrix.hpp"
 #include "MatrixFunc.hpp"
 
 void usage () {
@@ -12,13 +10,14 @@ void usage () {
 --method, -m [ARG]\t\tuse method ARG for solution\n\
 \tLU - \n\
 \tRUN - \n\
-\tYAKOBI - \n\
-\tZEIDEL - \n\
-\t? - \n\
-\t? - \n";
+\tSI_YAKOBI - \n\
+\tSI_ZEIDEL - \n\
+\tSPIN - \n\
+\tQR - \n";
 }
 
 int main (int argc, char *argv[]) {
+    uint64_t precision = 2;
     std::string input, output;
     std::fstream output_file, input_file;
     Method method = LU_METHOD;
@@ -34,10 +33,14 @@ int main (int argc, char *argv[]) {
                 method = LU_METHOD;
             } else if (tmp == "RUN") {
                 method = RUN_METHOD;
-            } else if (tmp == "YAKOBI") {
+            } else if (tmp == "SI_YAKOBI") {
                 method = SI_YAKOBI_METHOD;
-            } else if (tmp == "ZEIDEL") {
+            } else if (tmp == "SI_ZEIDEL") {
                 method = SI_ZEIDEL_METHOD;
+            } else if (tmp == "SPIN") {
+                method = SPIN_METHOD;
+            } else if (tmp == "QR") {
+                method = QR_METHOD;
             }
             ++i;
         } else if (str == "--input" || str == "-i") {
@@ -59,13 +62,21 @@ int main (int argc, char *argv[]) {
         } else if (str == "--help" || str == "-h") {
             usage();
             return 0;
+        } else if (str == "--precision" || str == "-p") {
+            if (i + 1 >= argc) {
+                usage();
+                return 2;
+            } else {
+                precision = std::stoi(argv[i + 1]);
+            }
+            ++i;
         } else {
             std::cout << "Unknown key \"" << argv[i] << "\"\n";
             usage();
             return 1;
         }
     }
-    std::cout.precision(2);
+    std::cout.precision(precision);
     std::cout.setf(std::ios_base::fixed);
 
     if (input != "") {
@@ -82,17 +93,11 @@ int main (int argc, char *argv[]) {
     std::cin >> n;
     std::cout << "\n";
 
-    Matrix<double> matrix(n, n);
-    std::vector<double> answers(n, 0);
+    Matrix<long double> matrix(n, n);
 
     std::cout << "Enter matrix " << n << "x" << n << ":\n";
     std::cin >> matrix;
-    std::cout << "Enter vector: ";
-    for (uint64_t i = 0; i < answers.size(); ++i) {
-        std::cin >> answers[i];
-    }
-    std::cout << "\n";
-    solveSLAE(method, matrix, answers);
+    solveSLAE(method, matrix);
 
     if (input != "") {
         input_file.close();

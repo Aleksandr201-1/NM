@@ -1,55 +1,72 @@
 #ifndef RUN_HPP
 #define RUN_HPP
 
-#include "Matrix.hpp"
 #include "General.hpp"
 
 template <class T>
-bool checkIf3Diagonal (const Matrix<T> &m) {
-    std::cout << "---CHECKING IF NOT 3-DIAGONAL---\n";
-    uint64_t n = m.size().first;
+bool checkIf3Diagonal (const Matrix<T> &matrix) {
+    std::cout << "===CHECKING IF NOT 3-DIAGONAL===\n";
+    uint64_t n = matrix.size().n;
     T null = T(0);
+    bool result = true;
     for (uint64_t i = 0; i < n; ++i) {
-        for (uint64_t j = 0; j < 1; ++j) {
-            if (is_equal(m(i, j), null)) {
-                std::cout << "NOT OK\n";
-                std::cout << "--------------DONE--------------\n";
-                return false;
+        uint64_t left, right;
+        left = i - 1 > n ? 0 : i - 1;
+        right = i + 2 > n ? n : i + 2;
+        for (uint64_t j = 0; j < left; ++j) {
+            if (!is_equal(matrix(i, j), null)) {
+                result = false;
+                break;
             }
         }
-        for (uint64_t j = 0; j < 1; ++j) {
-            if (1) {
-                std::cout << "NOT OK\n";
-                std::cout << "--------------DONE--------------\n";
-                return false;
+        for (uint64_t j = left; j < right; ++j) {
+            if (is_equal(matrix(i, j), null)) {
+                result = false;
+                break;
+            }
+        }
+        for (uint64_t j = right; j < n; ++j) {
+            if (!is_equal(matrix(i, j), null)) {
+                result = false;
+                break;
             }
         }
     }
-    std::cout << "OK\n";
-    std::cout << "--------------DONE--------------\n";
-    return true;
+    std::cout << (result ? "OK\n" : "Not OK.\n");
+    std::cout << "==============DONE==============\n";
+    return result;
 }
 
 template <class T>
-void RUNsolveSLAE (const Matrix<T> &m, const std::vector<T> &ans) {
-    uint64_t n = m.size().first;
+void RUNsolveSLAE (const Matrix<T> &matrix, const std::vector<T> &ans) {
+    uint64_t n = matrix.size().n;
     std::vector<T> P(n), Q(n), x(n);
 
-    std::cout << "Matrix A:\n" << m << "\n";
-    std::cout << "Vector b':";
-    for (uint64_t i = 0; i < ans.size(); ++i) {
-        std::cout << " " << ans[i];
-    }
-    std::cout << "\n\n";
+    std::cout << "Ax = b\n\nMatrix A:\n" << matrix << "\n";
+    printVector("b", ans);
+    std::cout << "\n";
 
-    T a = 0, b = m(0, 0), c = m(0, 1), d = ans[0];
+    if (!matrix.isSquare() || n != ans.size()) {
+        std::cout << "Matrix is not square. Stop working.\n";
+        return;
+    }
+    if (n != ans.size()) {
+        std::cout << "Matrix and vector have different sizes. Stop working.\n";
+        return;
+    }
+    if (!checkIf3Diagonal(matrix)) {
+        std::cout << "Matrix is not 3-diagonal. Stop working.\n";
+        return;
+    }
+
+    T a = 0, b = matrix(0, 0), c = matrix(0, 1), d = ans[0];
     P[0] = -c / b;
     Q[0] = d / b;
     std::cout << "Iteration 0:\nP[0] = -c[0] / b[0] = " << P[0] << "\nQ[0] = d[0] / b[0] = " << Q[0] << "\n";
     for (uint64_t i = 1; i < n; ++i) {
-        a = m(i, i - 1);
-        b = m(i, i);
-        c = i + 1 < n ? m(i, i + 1) : 0;
+        a = matrix(i, i - 1);
+        b = matrix(i, i);
+        c = i + 1 < n ? matrix(i, i + 1) : 0;
         d = ans[i];
         P[i] = -c / (b + a * P[i - 1]);
         Q[i] = (d - a * Q[i - 1]) / (b + a * P[i - 1]);
@@ -63,11 +80,7 @@ void RUNsolveSLAE (const Matrix<T> &m, const std::vector<T> &ans) {
         std::cout << "x[" << i << "] = P[" << i << "] * x[" << i + 1 << "] + Q[" << i << "] = " << x[i] << "\n";
     }
     std::cout << "\n"; 
-
-    std::cout << "Vector x:";
-    for (uint64_t i = 0; i < x.size(); ++i) {
-        std::cout << " " << x[i];
-    }
+    printVector("x", x);
     std::cout << "\n";
 }
 
