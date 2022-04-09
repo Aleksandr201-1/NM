@@ -5,7 +5,7 @@
 
 template <class T>
 T SINormal (const Matrix<T> &matrix) {
-    std::cout << "=====Simple Iteration Normal====\n";
+    std::cout << "=====Simple Iteration Norma=====\n";
     uint64_t n = matrix.size().n;
     T max = 0;
     for (uint64_t i = 0; i < n; ++i) {
@@ -74,15 +74,16 @@ void SISolveSLAE (const Matrix<T> &matrix, const std::vector<T> &b, T approx, Me
     uint64_t iteration = 0;
     T epsilon = T(0);
     if (a > T(1)) {
-        std::cout << "Normal greater than 1. Stop working\n";
+        std::cout << "Norma greater than 1. Stop working\n";
         return;
     }
 
-    std::cout << "\n";
+    std::cout << "\n------------\n";
     std::cout << "Iteration 0:\n";
     printVector("x", x);
     while (1) {
         ++iteration;
+        std::cout << "------------\n";
         std::cout << "Iteration " << iteration << ":\n";
         std::vector<T> newX(x);
         for (uint64_t i = 0; i < n; ++i) {
@@ -109,7 +110,7 @@ void SISolveSLAE (const Matrix<T> &matrix, const std::vector<T> &b, T approx, Me
         x = newX;
         printVector("x", x);
         std::cout << "E = " << epsilon << "\n";
-        if (epsilon < approx) {
+        if (epsilon < approx || iteration > ITERATION_LIMIT) {
             break;
         }
     }

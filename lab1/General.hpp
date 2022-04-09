@@ -16,6 +16,8 @@ enum Method {
     QR_METHOD
 };
 
+uint64_t ITERATION_LIMIT = 50;
+
 template <class T>
 bool is_equal(T x, T y) {
     return std::fabs(x - y) < std::numeric_limits<T>::epsilon();

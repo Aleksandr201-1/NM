@@ -1,4 +1,440 @@
 Enter matrix size: 
 Enter matrix 3x3:
-----------SOLVING SLAE----------
+==========SOLVING SLAE==========
 Enter approximation: 
+Matrix A:
+-8.00 -4.00 8.00
+-4.00 -3.00 9.00
+8.00 9.00 -5.00
+
+Epsilon = 0.01
+------------
+Iteration 0:
+A(0) = A
+------------
+Iteration 1:
+1. Finding max non-diagonal element
+Max element: 9.00 at cell (1, 2)
+
+2. Finding matrix U(1)
+phi = 1 / 2 * arctg(2 * A(1, 2) / A(1, 1) - A(2, 2) = 0.73
+Matrix U(1):
+1.00 0.00 0.00
+0.00 0.75 -0.67
+0.00 0.67 0.75
+
+3. Finding A(1)
+A(1) = Tr(U(1)) * A(0) * U(1)
+Matrix A:
+-8.00 2.35 8.63
+2.35 5.06 0.00
+8.63 0.00 -13.06
+
+Epsilon = 8.94
+------------
+Iteration 2:
+1. Finding max non-diagonal element
+Max element: 8.63 at cell (0, 2)
+
+2. Finding matrix U(2)
+phi = 1 / 2 * arctg(2 * A(0, 2) / A(0, 0) - A(2, 2) = 0.64
+Matrix U(2):
+0.80 0.00 -0.60
+0.00 1.00 0.00
+0.60 0.00 0.80
+
+3. Finding A(2)
+A(2) = Tr(U(2)) * A(1) * U(2)
+Matrix A:
+-1.54 1.88 -0.00
+1.88 5.06 -1.41
+0.00 -1.41 -19.52
+
+Epsilon = 2.35
+------------
+Iteration 3:
+1. Finding max non-diagonal element
+Max element: 1.88 at cell (0, 1)
+
+2. Finding matrix U(3)
+phi = 1 / 2 * arctg(2 * A(0, 1) / A(0, 0) - A(1, 1) = -0.26
+Matrix U(3):
+0.97 0.26 0.00
+-0.26 0.97 0.00
+0.00 0.00 1.00
+
+3. Finding A(3)
+A(3) = Tr(U(3)) * A(2) * U(3)
+Matrix A:
+-2.04 -0.00 0.36
+-0.00 5.56 -1.36
+0.36 -1.36 -19.52
+
+Epsilon = 1.41
+------------
+Iteration 4:
+1. Finding max non-diagonal element
+Max element: -1.36 at cell (1, 2)
+
+2. Finding matrix U(4)
+phi = 1 / 2 * arctg(2 * A(1, 2) / A(1, 1) - A(2, 2) = -0.05
+Matrix U(4):
+1.00 0.00 0.00
+0.00 1.00 0.05
+0.00 -0.05 1.00
+
+3. Finding A(4)
+A(4) = Tr(U(4)) * A(3) * U(4)
+Matrix A:
+-2.04 -0.02 0.36
+-0.02 5.63 -0.00
+0.36 0.00 -19.59
+
+Epsilon = 0.36
+------------
+Iteration 5:
+1. Finding max non-diagonal element
+Max element: 0.36 at cell (0, 2)
+
+2. Finding matrix U(5)
+phi = 1 / 2 * arctg(2 * A(0, 2) / A(0, 0) - A(2, 2) = 0.02
+Matrix U(5):
+1.00 0.00 -0.02
+0.00 1.00 0.00
+0.02 0.00 1.00
+
+3. Finding A(5)
+A(5) = Tr(U(5)) * A(4) * U(5)
+Matrix A:
+-2.03 -0.02 0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 6:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (1, 2)
+
+2. Finding matrix U(6)
+phi = 1 / 2 * arctg(2 * A(1, 2) / A(1, 1) - A(2, 2) = 0.00
+Matrix U(6):
+1.00 0.00 0.00
+0.00 1.00 -0.00
+0.00 0.00 1.00
+
+3. Finding A(6)
+A(6) = Tr(U(6)) * A(5) * U(6)
+Matrix A:
+-2.03 -0.02 0.00
+-0.02 5.63 -0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 7:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (0, 2)
+
+2. Finding matrix U(7)
+phi = 1 / 2 * arctg(2 * A(0, 2) / A(0, 0) - A(2, 2) = 0.00
+Matrix U(7):
+1.00 0.00 -0.00
+0.00 1.00 0.00
+0.00 0.00 1.00
+
+3. Finding A(7)
+A(7) = Tr(U(7)) * A(6) * U(7)
+Matrix A:
+-2.03 -0.02 -0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 8:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (1, 2)
+
+2. Finding matrix U(8)
+phi = 1 / 2 * arctg(2 * A(1, 2) / A(1, 1) - A(2, 2) = 0.00
+Matrix U(8):
+1.00 0.00 0.00
+0.00 1.00 -0.00
+0.00 0.00 1.00
+
+3. Finding A(8)
+A(8) = Tr(U(8)) * A(7) * U(8)
+Matrix A:
+-2.03 -0.02 0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 9:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (0, 2)
+
+2. Finding matrix U(9)
+phi = 1 / 2 * arctg(2 * A(0, 2) / A(0, 0) - A(2, 2) = 0.00
+Matrix U(9):
+1.00 0.00 -0.00
+0.00 1.00 0.00
+0.00 0.00 1.00
+
+3. Finding A(9)
+A(9) = Tr(U(9)) * A(8) * U(9)
+Matrix A:
+-2.03 -0.02 -0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 10:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (1, 2)
+
+2. Finding matrix U(10)
+phi = 1 / 2 * arctg(2 * A(1, 2) / A(1, 1) - A(2, 2) = 0.00
+Matrix U(10):
+1.00 0.00 0.00
+0.00 1.00 -0.00
+0.00 0.00 1.00
+
+3. Finding A(10)
+A(10) = Tr(U(10)) * A(9) * U(10)
+Matrix A:
+-2.03 -0.02 0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 11:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (0, 2)
+
+2. Finding matrix U(11)
+phi = 1 / 2 * arctg(2 * A(0, 2) / A(0, 0) - A(2, 2) = 0.00
+Matrix U(11):
+1.00 0.00 -0.00
+0.00 1.00 0.00
+0.00 0.00 1.00
+
+3. Finding A(11)
+A(11) = Tr(U(11)) * A(10) * U(11)
+Matrix A:
+-2.03 -0.02 -0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 12:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (1, 2)
+
+2. Finding matrix U(12)
+phi = 1 / 2 * arctg(2 * A(1, 2) / A(1, 1) - A(2, 2) = 0.00
+Matrix U(12):
+1.00 0.00 0.00
+0.00 1.00 -0.00
+0.00 0.00 1.00
+
+3. Finding A(12)
+A(12) = Tr(U(12)) * A(11) * U(12)
+Matrix A:
+-2.03 -0.02 0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 13:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (0, 2)
+
+2. Finding matrix U(13)
+phi = 1 / 2 * arctg(2 * A(0, 2) / A(0, 0) - A(2, 2) = 0.00
+Matrix U(13):
+1.00 0.00 -0.00
+0.00 1.00 0.00
+0.00 0.00 1.00
+
+3. Finding A(13)
+A(13) = Tr(U(13)) * A(12) * U(13)
+Matrix A:
+-2.03 -0.02 0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 14:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (1, 2)
+
+2. Finding matrix U(14)
+phi = 1 / 2 * arctg(2 * A(1, 2) / A(1, 1) - A(2, 2) = 0.00
+Matrix U(14):
+1.00 0.00 0.00
+0.00 1.00 -0.00
+0.00 0.00 1.00
+
+3. Finding A(14)
+A(14) = Tr(U(14)) * A(13) * U(14)
+Matrix A:
+-2.03 -0.02 0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 15:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (0, 2)
+
+2. Finding matrix U(15)
+phi = 1 / 2 * arctg(2 * A(0, 2) / A(0, 0) - A(2, 2) = 0.00
+Matrix U(15):
+1.00 0.00 -0.00
+0.00 1.00 0.00
+0.00 0.00 1.00
+
+3. Finding A(15)
+A(15) = Tr(U(15)) * A(14) * U(15)
+Matrix A:
+-2.03 -0.02 -0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 16:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (1, 2)
+
+2. Finding matrix U(16)
+phi = 1 / 2 * arctg(2 * A(1, 2) / A(1, 1) - A(2, 2) = 0.00
+Matrix U(16):
+1.00 0.00 0.00
+0.00 1.00 -0.00
+0.00 0.00 1.00
+
+3. Finding A(16)
+A(16) = Tr(U(16)) * A(15) * U(16)
+Matrix A:
+-2.03 -0.02 0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 17:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (0, 2)
+
+2. Finding matrix U(17)
+phi = 1 / 2 * arctg(2 * A(0, 2) / A(0, 0) - A(2, 2) = 0.00
+Matrix U(17):
+1.00 0.00 -0.00
+0.00 1.00 0.00
+0.00 0.00 1.00
+
+3. Finding A(17)
+A(17) = Tr(U(17)) * A(16) * U(17)
+Matrix A:
+-2.03 -0.02 -0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 18:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (1, 2)
+
+2. Finding matrix U(18)
+phi = 1 / 2 * arctg(2 * A(1, 2) / A(1, 1) - A(2, 2) = 0.00
+Matrix U(18):
+1.00 0.00 0.00
+0.00 1.00 -0.00
+0.00 0.00 1.00
+
+3. Finding A(18)
+A(18) = Tr(U(18)) * A(17) * U(18)
+Matrix A:
+-2.03 -0.02 0.00
+-0.02 5.63 -0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 19:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (0, 2)
+
+2. Finding matrix U(19)
+phi = 1 / 2 * arctg(2 * A(0, 2) / A(0, 0) - A(2, 2) = 0.00
+Matrix U(19):
+1.00 0.00 -0.00
+0.00 1.00 0.00
+0.00 0.00 1.00
+
+3. Finding A(19)
+A(19) = Tr(U(19)) * A(18) * U(19)
+Matrix A:
+-2.03 -0.02 -0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 20:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (1, 2)
+
+2. Finding matrix U(20)
+phi = 1 / 2 * arctg(2 * A(1, 2) / A(1, 1) - A(2, 2) = 0.00
+Matrix U(20):
+1.00 0.00 0.00
+0.00 1.00 -0.00
+0.00 0.00 1.00
+
+3. Finding A(20)
+A(20) = Tr(U(20)) * A(19) * U(20)
+Matrix A:
+-2.03 -0.02 0.00
+-0.02 5.63 -0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+------------
+Iteration 21:
+1. Finding max non-diagonal element
+Max element: 0.00 at cell (0, 2)
+
+2. Finding matrix U(21)
+phi = 1 / 2 * arctg(2 * A(0, 2) / A(0, 0) - A(2, 2) = 0.00
+Matrix U(21):
+1.00 0.00 -0.00
+0.00 1.00 0.00
+0.00 0.00 1.00
+
+3. Finding A(21)
+A(21) = Tr(U(21)) * A(20) * U(21)
+Matrix A:
+-2.03 -0.02 -0.00
+-0.02 5.63 0.00
+0.00 0.00 -19.60
+
+Epsilon = 0.02
+Final answer:
+Vector lambda: -2.03 5.63 -19.60
+
+Vector x0: 0.76 -0.59 0.27
+Vector x1: 0.24 0.65 0.73
+Vector x2: -0.60 -0.49 0.63
+==============DONE==============

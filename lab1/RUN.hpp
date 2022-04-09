@@ -62,6 +62,7 @@ void RUNsolveSLAE (const Matrix<T> &matrix, const std::vector<T> &ans) {
     T a = 0, b = matrix(0, 0), c = matrix(0, 1), d = ans[0];
     P[0] = -c / b;
     Q[0] = d / b;
+    std::cout << "------------\n";
     std::cout << "Iteration 0:\nP[0] = -c[0] / b[0] = " << P[0] << "\nQ[0] = d[0] / b[0] = " << Q[0] << "\n";
     for (uint64_t i = 1; i < n; ++i) {
         a = matrix(i, i - 1);
@@ -70,6 +71,7 @@ void RUNsolveSLAE (const Matrix<T> &matrix, const std::vector<T> &ans) {
         d = ans[i];
         P[i] = -c / (b + a * P[i - 1]);
         Q[i] = (d - a * Q[i - 1]) / (b + a * P[i - 1]);
+        std::cout << "------------\n";
         std::cout << "Iteration " << i << ":\nP[" << i << "] = -c[" << i << "] / (b[" << i << "] + a[" << i << "] * P[" << i - 1 << "]) = " << P[i] << "\n"; 
         std::cout << "Q[" << i << "] = (d[" << i << "] - a[" << i << "] * Q[" << i - 1 << "]) / (b[" << i << "] + a[" << i << "] * P[" << i - 1 << "]) = " << Q[i] << "\n";
     }

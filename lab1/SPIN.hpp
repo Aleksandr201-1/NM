@@ -34,7 +34,6 @@ template <class T>
 void SPINsolveSLAE (const Matrix<T> &matrix, T approx) {
     uint64_t n = matrix.size().n;
     Matrix<T> A(matrix), Ufin(n);
-    std::vector<Matrix<T>> U;
     std::vector<T> lambda(n);
     std::cout << "Matrix A:\n" << matrix << "\nEpsilon = " << approx << "\n";
 
@@ -69,16 +68,13 @@ void SPINsolveSLAE (const Matrix<T> &matrix, T approx) {
         std::cout << "A(" << iteration << ") = Tr(U(" << iteration << ")) * A(" << iteration - 1 << ") * U(" << iteration << ")\n";
         std::cout << "Matrix A:\n" << A << "\n";
         std::cout << "Epsilon = " << epsilon << "\n";
-        U.push_back(Uk);
-        if (epsilon < approx || iteration > 3) {
+        Ufin = Ufin * Uk;
+        if (epsilon < approx || iteration > ITERATION_LIMIT) {
             break;
         }
     }
     for (uint64_t i = 0; i < n; ++i) {
         lambda[i] = A(i, i);
-    }
-    for (auto el : U) {
-        Ufin = Ufin * el;
     }
     std::cout << "Final answer:\n";
     printVector("lambda", lambda);

@@ -6,14 +6,16 @@ void usage () {
     std::cout << "Usage:\n\
 --help, -h\t\t\tshow the usage\n\
 --input, -i [X]\t\t\tuse file X with ready to use data (matrix and vector)\n\
---output, -o [X]\t\t\tuse file X for output\n\
---method, -m [ARG]\t\tuse method ARG for solution\n\
-\tLU - \n\
-\tRUN - \n\
-\tSI_YAKOBI - \n\
-\tSI_ZEIDEL - \n\
-\tSPIN - \n\
-\tQR - \n";
+--output, -o [X]\t\tuse file X for output\n\
+--method, -m [ARG]\t\tuse method ARG for solution of SLAE\n\
+\tLU - \t\t\tsolving SLAE with LU decomposition, finding det and reverse matrix\n\
+\tRUN - \t\t\tsolving SLAE with RUN method\n\
+\tSI_YAKOBI - \t\tSimple iteration (Yakobi)\n\
+\tSI_ZEIDEL - \t\tSimple iteration (Zeidel)\n\
+\tSPIN - \t\t\tfinding eigenvalues and eigenvectors with spin method\n\
+\tQR - \t\t\tQR decomposition\n\
+--precision, -p [N]\t\tcount of nums after point\n\
+--iteration-limit, -il [N]\tset limit of iterations\n";
 }
 
 int main (int argc, char *argv[]) {
@@ -68,6 +70,14 @@ int main (int argc, char *argv[]) {
                 return 2;
             } else {
                 precision = std::stoi(argv[i + 1]);
+            }
+            ++i;
+        } else if (str == "--iteration-limit" || str == "-il") {
+            if (i + 1 >= argc) {
+                usage();
+                return 2;
+            } else {
+                ITERATION_LIMIT = std::stoi(argv[i + 1]);
             }
             ++i;
         } else {

@@ -8,6 +8,7 @@ bool chooseMainEl (Matrix<T> &matrix, std::vector<T> &b) {
     std::cout << "=======CREATING A' MATRIX=======\n";
     uint64_t n = matrix.size().n;
     bool result = true;
+    T null = 0;
     for (uint64_t i = 0; i < n; ++i) {
         if (matrix(i, i) == null) {
             uint64_t j = i + 1;
@@ -56,7 +57,7 @@ std::tuple<Matrix<T>, Matrix<T>> LU (const Matrix<T> &matrix) {
         for(uint64_t i = k; i < n; ++i) {
             for(uint64_t j = k - 1; j < n; ++j) {
                 U(i, j) = U(i, j) - L(i, k - 1) * U(k - 1, j);
-                std::cout << "U(" << i << ", " << j << ") = U(" << i << ", " << j << ") - L(" << i << ", " << k - 1 << ") * U(" << k - 1 << ", " << j << ")" << "= " << U(i, j) << "\n";
+                std::cout << "U(" << i << ", " << j << ") = U(" << i << ", " << j << ") - L(" << i << ", " << k - 1 << ") * U(" << k - 1 << ", " << j << ")" << " = " << U(i, j) << "\n";
             }
         }
     }
@@ -128,16 +129,53 @@ void LUsolveSLAE (const Matrix<T> &matrix, const std::vector<T> &ans) {
     printVector("x", x);
     std::cout << "\n";
 
-    std::cout << "det(A) = 1 ";
+    std::cout << "det(A) = 1";
     T det = 1;
     for (uint64_t i = 0; i < n; ++i) {
         det *= U(i, i);
         std::cout << " * U(" << i << ", " << i << ")";
     }
-    std::cout << " = " << det << "\n";
+    std::cout << " = " << det << "\n\n";
 
-    std::cout << "Finding reverse matrix Ar\nLUAr = E\nLY = E\nUAr = Y\n";
-    Matrix<T> Ar(A), Y(n);
+    std::cout << "Finding reverse matrix Ar\nL * U * Ar = E\nL * Lr = E\nU * Ur = E\nAr = Ur * Lr\n\n";
+    Matrix<T> Ar(A), Lr(n), Ur(n);
+    
+    std::cout << "Creating Lr:\n";
+    for (uint64_t i = 0; i < n; ++i) {
+        Lr(i, i) = 1.0 / L(i, i);
+        std::cout << "Lr(" << i << ", " << i << ") = 1.0 / L(" << i << ", " << i << ")\n";
+        for (uint64_t j = i + 1; j < n; ++j) {
+            T tmp = 0;
+            std::cout << "Lr(" << j << ", " << i << ") = (0";
+            for (uint64_t k = 0; k < j; ++k) {
+                tmp -= L(j, k) * Lr(k, i);
+                std::cout << " + L(" << j << ", " << k << ") * Lr(" << k << ", " << i << ")";
+            }
+            std::cout << ") / L(" << j << ", " << j << ")\n";
+            Lr(j, i) = tmp / L(j, j);
+        }
+    }
+    std::cout << "Matrix Lr:\n" << Lr << "\n";
+
+    std::cout << "Creating Ur:\n";
+    for (uint64_t i = n - 1; i < n; --i) {
+        Ur(i, i) = 1.0 / U(i, i);
+        std::cout << "Ur(" << i << ", " << i << ") = 1.0 / U(" << i << ", " << i << ")\n";
+        for (uint64_t j = i - 1; j < n; --j) {
+            T tmp = 0;
+            std::cout << "Ur(" << j << ", " << i << ") = (0";
+            for (uint64_t k = i; k > j; --k) {
+                tmp -= U(j, k) * Ur(k, i);
+                std::cout << " + U(" << j << ", " << k << ") * Ur(" << k << ", " << i << ")";
+            }
+            std::cout << ") / U(" << j << ", " << j << ")\n";
+            Ur(j, i) = tmp / U(j, j);
+        }
+    }
+    std::cout << "Matrix Ur:\n" << Ur << "\n";
+
+    Ar = Ur * Lr;
+    std::cout << "Matrix Ar:\n" << Ar << "\nAr * A:\n" << Ar * matrix << "\n";
 }
 
 #endif
