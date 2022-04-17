@@ -32,7 +32,7 @@ T FindEpsilon (const std::vector<T> &oldX, const std::vector<T> &newX, T a) {
             eps = tmp;
         }
     }
-    return eps * a / (T(1) - a);
+    return a < T(1) ? eps * a / (T(1) - a) : eps;
 }
 
 template <class T>
@@ -74,8 +74,9 @@ void SISolveSLAE (const Matrix<T> &matrix, const std::vector<T> &b, T approx, Me
     uint64_t iteration = 0;
     T epsilon = T(0);
     if (a > T(1)) {
-        std::cout << "Norma greater than 1. Stop working\n";
-        return;
+        std::cout << "Norma greater than 1. Using second end criteria (||x(k) - x(k - 1)|| < e)\n";
+    } else {
+        std::cout << "Norma below 1. Using first end criteria (||x(k) - x*|| < e)\n";
     }
 
     std::cout << "\n------------\n";

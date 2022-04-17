@@ -86,6 +86,17 @@ void SPINsolveSLAE (const Matrix<T> &matrix, T approx) {
         }
         std::cout << "\n";
     }
+    std::cout << "\nChecking vectors for orthogonality:\n";
+    for (uint64_t i = 0; i < n; ++i) {
+        for (uint64_t j = i + 1; j < n; ++j) {
+            std::cout << "x" << i << " * x" << j << " = ";
+            T ans = 0;
+            for (uint64_t k = 0; k < n; ++k) {
+                ans += Ufin(k, i) * Ufin(k, j);
+            }
+            std::cout << ans << "\n";
+        }
+    }
 }
 
 #endif
