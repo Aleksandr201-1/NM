@@ -19,7 +19,6 @@ void usage () {
 }
 
 int main (int argc, char *argv[]) {
-    uint64_t precision = 2;
     std::string input, output;
     std::fstream output_file, input_file;
     Method method = LU_METHOD;
@@ -69,7 +68,7 @@ int main (int argc, char *argv[]) {
                 usage();
                 return 2;
             } else {
-                precision = std::stoi(argv[i + 1]);
+                PRECISION = std::stoi(argv[i + 1]);
             }
             ++i;
         } else if (str == "--iteration-limit" || str == "-il") {
@@ -86,7 +85,7 @@ int main (int argc, char *argv[]) {
             return 1;
         }
     }
-    std::cout.precision(precision);
+    std::cout.precision(PRECISION);
     std::cout.setf(std::ios_base::fixed);
 
     if (input != "") {
