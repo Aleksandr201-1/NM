@@ -30,6 +30,8 @@ class Matrix {
         MatrixSize size () const;
         //изменение размеров матрицы
         void resize (uint64_t newN, uint64_t newM, T el = 0);
+        //преобразовать всю матрицу в одномерный массив
+        const std::vector<T> &toVector () const;
 
         //унарные + и -
         const Matrix<T> operator+ () const;
@@ -161,6 +163,12 @@ void Matrix<T>::resize (uint64_t newN, uint64_t newM, T el) {
     m = newM;
 }
 
+//преобразовать всю матрицу в одномерный массив
+template <class T>
+const std::vector<T> &Matrix<T>::toVector () const {
+    return buff;
+}
+
 //унарные + и -
 template <class T>
 const Matrix<T> Matrix<T>::operator+ () const {
@@ -216,9 +224,11 @@ const Matrix<T> operator* (const Matrix<T> &m1, const Matrix<T> &m2) {
         for (uint64_t j = 0; j < ans.m; ++j) {
             T el = 0;
             for(uint64_t k = 0; k < m1.m; ++k) {
+                //el += m1(i, k) * m2(k, j);
                 el += m1.buff[i * m1.m + k] * m2.buff[k * m2.m + j];
             }
             ans.buff[i * ans.m + j] = el;
+            //ans(i, j) = el;
         }
     }
     return ans;
@@ -388,7 +398,7 @@ void Matrix<T>::addRow (uint64_t i, const std::vector<T> &vec) {
 template <class T>
 void Matrix<T>::swapCols (uint64_t i, uint64_t j) {
     if (i >= m || j >= m) {
-        throw std::out_of_range("Operation \"det\" available only for square matrix");
+        throw std::out_of_range("Operation \"swapCols\" out of range.");
     }
     for (uint64_t k = 0; k < n; ++k) {
         std::swap(buff[k * m + i], buff[k * m + j]);
@@ -399,7 +409,7 @@ void Matrix<T>::swapCols (uint64_t i, uint64_t j) {
 template <class T>
 void Matrix<T>::swapRows (uint64_t i, uint64_t j) {
     if (i >= n || j >= n) {
-        throw std::out_of_range("Operation \"det\" available only for square matrix");
+        throw std::out_of_range("Operation \"swapRows\" out of range.");
     }
     for (uint64_t k = 0; k < m; ++k) {
         std::swap(buff[i * m + k], buff[j * m + k]);
