@@ -19,13 +19,11 @@ std::tuple<Matrix<T>, Matrix<T>> QR (const Matrix<T> &matrix) {
     //std::cout << "Matrix A:\n" << matrix << "\n";
     uint64_t n = matrix.size().n;
     Matrix<T> Q(n), R(matrix), v(n, 1);
-    std::vector<Matrix<T>> HouseHolder;
-
     //std::cout << "------------\n";
-    //std::cout << "Iteration 0:\nA(0) = A\n";
+    //std::cout << "Step 0:\nA(0) = A\n";
     for (uint64_t i = 0; i < n - 1; ++i) {
         //std::cout << "------------\n";
-        //std::cout << "Iteration " << i + 1 << ":\n";
+        //std::cout << "Step " << i + 1 << ":\n";
         for (uint64_t j = 0; j < i; ++j) {
             v(j, 0) = 0;
         }
@@ -40,10 +38,7 @@ std::tuple<Matrix<T>, Matrix<T>> QR (const Matrix<T> &matrix) {
         //std::cout << "Matrix H(" << i << "):\n" << H << "\n";
         R = H * R;
         //std::cout << "Matrix A(" << i << "):\n" << R << "\n";
-        HouseHolder.push_back(H);
-    }
-    for (auto el : HouseHolder) {
-        Q = Q * el;
+        Q = Q * H;
     }
     R(1, 0) = R(2, 0) = R(2, 1) = T(0);
     std::cout << "==============DONE==============\n";
@@ -94,9 +89,6 @@ void QRsolveSLAE (const Matrix<T> &matrix, T approx) {
             std::cout << "x[" << i << "] = " << -b / 2 << " + " << std::sqrt(std::abs(D)) / 2 << "i\n";
             ++i;
             std::cout << "x[" << i << "] = " << -b / 2<< " - " << std::sqrt(std::abs(D)) / 2 << "i\n";
-            //a22a33 - a23a32 - (a22 + a33)l + l^2 = 0
-            //l^2 - (a22 + a33)l + (a22a33 - a23a32) = 0
-            //T b = -(a22 + a33) / 2, c = a22a33 - a23a32;
         }
     }
 }

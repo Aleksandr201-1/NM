@@ -47,7 +47,7 @@ std::tuple<Matrix<T>, Matrix<T>, Matrix<T>> LU (const Matrix<T> &matrix) {
     U = P * U;
     for(uint64_t k = 1; k < n; ++k) {
         std::cout << "------------\n";
-        std::cout << "Iteration " << k << ":\n";
+        std::cout << "Step " << k << ":\n";
         for(uint64_t i = k - 1; i < n; ++i) {
             for(uint64_t j = i; j < n; ++j) {
                 L(j, i) = U(j, i) / U(i, i);
@@ -92,7 +92,7 @@ void LUsolveSLAE (const Matrix<T> &matrix, const std::vector<T> &ans) {
     printVector("b", b);
     std::cout << "\nPA = LU\n";
 
-    std::cout << "\nMatrix L:\n" << L << "\nMatrix U:\n" << U << "\nPt * L * U:\n" <<  L * U << "\nMatrix P:\n" << P << "\n";
+    std::cout << "\nMatrix L:\n" << L << "\nMatrix U:\n" << U << "\nPt * L * U:\n" << P.transp() * L * U << "\nMatrix P:\n" << P << "\n";
 
     y[0] = b[0];
     std::cout << "Solving system:\n" << "Ly = b\nUx = y\n\ny[0] = b[0] = " << b[0] << "\n";
