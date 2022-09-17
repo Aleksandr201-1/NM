@@ -4,6 +4,10 @@ double findEpsillon () {
     return std::pow(__DBL_EPSILON__, 1.0 / 3) * 10;
 }
 
+bool isEqual(double x, double y) {
+    return std::fabs(x - y) < std::numeric_limits<double>::epsilon();
+}
+
 double derivative (double (*f)(double), double x, uint64_t degree) {
     static double eps = findEpsillon();
     if (degree == 1) {

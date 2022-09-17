@@ -8,8 +8,9 @@
 using System = std::vector<double (*)(const std::vector<double> &)>;
 
 std::tuple<Matrix<double>, Matrix<double>, Matrix<double>> createAAJ (const System &system, const std::vector<double> &x);
-std::vector<double> Newton (const System &system, const std::vector<double> &x, double e);
+std::pair<std::vector<double>, uint64_t> Newton (const System &system, const std::vector<double> &x, double e);
 
-std::vector<double> SI (const System &system, const std::vector<double> &x, double e);
+double findQ (const System &system, const std::vector<double> &x);
+std::pair<std::vector<double>, uint64_t> SI (const System &system, const std::vector<double> &x, double e);
 
 #endif

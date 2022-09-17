@@ -4,8 +4,14 @@
 #include <cmath>
 #include <vector>
 #include <cstdint>
+#include <limits>
+#include <stdexcept>
+
+const uint64_t ITERATION_CAP = 20;
 
 double findEpsillon ();
+
+bool isEqual(double x, double y);
 
 double derivative (double (*f)(double), double x, uint64_t degree = 1);
 
