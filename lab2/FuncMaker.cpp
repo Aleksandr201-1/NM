@@ -12,38 +12,32 @@ OperationNode::~OperationNode () {}
 ValueNode::ValueNode (double val) : FunctionalTreeNode(NodeType::VALUE), val(val) {}
 ValueNode::~ValueNode () {}
 
-VariableNode::VariableNode (Vars var) : FunctionalTreeNode(NodeType::VARIABLE), var(var) {}
+VariableNode::VariableNode (uint64_t idx) : FunctionalTreeNode(NodeType::VARIABLE), idx(idx) {}
 VariableNode::~VariableNode () {}
 
-std::string FunctionalTree::readWord (const std::string &func, uint64_t &i) const {
-    std::string str;
-    //words
-    std::cout << "reading word...\n";
-    while (((func[i] > 'A' && func[i] < 'Z') || (func[i] > 'a' && func[i] < 'z')) && i < func.size()) {
-        str += func[i];
-        //std::cout << "let: " << func[i] << "\n";
-        ++i;
+void FunctionalTree::inputCheck (const std::string &func, const std::vector<std::string> &vars) const {
+    if (vars.size() > VARIABLE_LIMIT) {
+        throw std::logic_error("Operation \"inputCheck\": count of vars limited by " + std::to_string(VARIABLE_LIMIT));
     }
-    //+,-,*,/,%,^
-    if (str.empty() && i < func.size()) {
-        str += func[i];
-        ++i;
+    for (uint64_t i = 0; i < vars.size(); ++i) {
+        std::vector<std::string>::const_iterator it = std::find(operations.cbegin(), operations.cend(), vars[i]);
+        uint64_t idx = std::distance(operations.cbegin(), it);
+        if (idx != operations.size()) {
+            throw std::logic_error("Operation \"inputCheck\": used var name \"" + vars[i] + "\" which is a name of operation");
+        }
     }
-    return str;
-}
-
-double FunctionalTree::readNumber (const std::string &func, uint64_t &i) const {
-    std::string str;
-    while (((func[i] >= '0' && func[i] <= '9') || func[i] == '.') && i < func.size()) {
-        str += func[i];
-        ++i;
+    for (uint64_t i = 0; i < vars.size(); ++i) {
+        uint64_t count = std::count(vars.cbegin(), vars.cend(), vars[i]);
+        if (count != 1) {
+            throw std::logic_error("Operation \"inputCheck\": var name \"" + vars[i] + "\" used more than 1 time");
+        }
     }
-    return std::atof(str.c_str());
 }
 
 std::string FunctionalTree::readOperation (const std::string &func, uint64_t &i) const {
     std::string str;
-    while (i < func.size()) {
+    bool flag = true;
+    while (i < func.size() && flag) {
         switch (func[i]) {
             case '+':
             case '-':
@@ -55,11 +49,39 @@ std::string FunctionalTree::readOperation (const std::string &func, uint64_t &i)
                 ++i;
                 break;
             default:
-                i = func.size();
+                //i = func.size();
+                flag = false;
                 break;
         }
     }
     return str;
+}
+
+std::string FunctionalTree::readWord (const std::string &func, uint64_t &i) const {
+    std::string str;
+    //words
+    //std::cout << "reading word...\n";
+    while (((func[i] > 'A' && func[i] < 'Z') || (func[i] > 'a' && func[i] < 'z')) && i < func.size()) {
+        str += func[i];
+        //std::cout << "let: " << func[i] << "\n";
+        ++i;
+    }
+    //+,-,*,/,%,^
+    if (str.empty() && i < func.size()) {
+        str = readOperation(func, i);
+        //str += func[i];
+        //++i;
+    }
+    return str;
+}
+
+double FunctionalTree::readNumber (const std::string &func, uint64_t &i) const {
+    std::string str;
+    while (((func[i] >= '0' && func[i] <= '9') || func[i] == '.') && i < func.size()) {
+        str += func[i];
+        ++i;
+    }
+    return std::atof(str.c_str());
 }
 
 std::string FunctionalTree::readInbrace (const std::string &func, uint64_t &i) const {
@@ -81,7 +103,7 @@ std::string FunctionalTree::readInbrace (const std::string &func, uint64_t &i) c
     }
     ++i;
     if (braceCount != 0) {
-        throw std::out_of_range("Operation \"readInbrace\" out of range. Incorrect placement of brackets");
+        throw std::out_of_range("Operation \"readInbrace\": out of range. Incorrect placement of brackets");
     }
     // do {
     //     if (func[i] == '(') {
@@ -100,6 +122,9 @@ std::string FunctionalTree::readInbrace (const std::string &func, uint64_t &i) c
 
 Operation FunctionalTree::getOperation (const std::string &str) const {
     Operation op = Operation::NOT_AN_OPERATION;
+    if (str == "**") {
+        return Operation::POW;
+    }
     for (uint64_t i = 0; i < operations.size(); ++i) {
         if (str == operations[i]) {
             op = static_cast<Operation>(i);
@@ -154,35 +179,33 @@ double FunctionalTree::useOperation (Operation op, double x, double y) const {
     }
 }
 
-double FunctionalTree::getVal (const NodePtr &node, double x) const {
+double FunctionalTree::getVal (const NodePtr &node, const std::vector<double> &X) const {
     if (!node->left.get() && !node->right.get()) {
         if (node->type == NodeType::VALUE) {
             ValueNode* value = (ValueNode*) node.get();
             return value->val;
         } else {
-            return x;
+            VariableNode* var = (VariableNode*) node.get();
+            return X[var->idx];
         }
     }
     OperationNode* operation = (OperationNode*) node.get();
     if (node->left && !node->right) {
-        return useOperation(operation->op, getVal(operation->left, x), 0);
+        return useOperation(operation->op, getVal(operation->left, X), 0);
     }
     if (!node->left && node->right) {
-        return useOperation(operation->op, getVal(operation->right, x), 0);
+        return useOperation(operation->op, getVal(operation->right, X), 0);
     }
-    double a = getVal(node->left, x);
-    double b = getVal(node->right, x);
+    double a = getVal(node->left, X);
+    double b = getVal(node->right, X);
     return useOperation(operation->op, a, b);
 }
 
 void FunctionalTree::addToTree (NodePtr &tree, NodePtr &toAdd) {
     if (!tree.get()) {
         tree.swap(toAdd);
-        //tree = toAdd;
-        //tree = toAdd.get();
         return;
     }
-    //OperationNode *t = (OperationNode *)tree.get(), *a = (OperationNode *)toAdd.get();
     switch (toAdd->type) {
         case NodeType::OPERATION:
             if (tree->type == NodeType::OPERATION) {
@@ -205,20 +228,6 @@ void FunctionalTree::addToTree (NodePtr &tree, NodePtr &toAdd) {
                 toAdd->left.swap(tree);
                 tree.swap(toAdd);
             }
-            // if (toAdd->left || toAdd->right) {
-            //     tree->right.swap(toAdd);
-            // } else if (tree->type == NodeType::OPERATION) {
-            //     if (tree->priority <= toAdd->priority) {
-            //         toAdd->left.swap(tree);
-            //         tree.swap(toAdd);
-            //     } else {
-            //         toAdd->left.swap(tree->right);
-            //         tree->right.swap(toAdd);
-            //     }
-            // } else {
-            //     toAdd->left.swap(tree);
-            //     tree.swap(toAdd);
-            // }
             break;
         case NodeType::VALUE:
         case NodeType::VARIABLE:
@@ -234,7 +243,6 @@ void FunctionalTree::addToTree (NodePtr &tree, NodePtr &toAdd) {
                 } else {
                     tmp->right.swap(toAdd);
                 }
-                //tree->right.swap(toAdd);
             }
             break;
         default:
@@ -242,27 +250,29 @@ void FunctionalTree::addToTree (NodePtr &tree, NodePtr &toAdd) {
     }
 }
 
-FunctionalTree::NodePtr FunctionalTree::buildTree (const std::string &func) {
-    std::cout << "Our func: " << func << "\n";
+FunctionalTree::NodePtr FunctionalTree::buildTree (const std::string &func, const std::vector<std::string> &vars) {
+    //std::cout << "Our func: " << func << "\n";
     std::string tmp;
     uint64_t i = 0;
-    double number;
+
+    double num;
     Operation op;
+    uint64_t idx;
     NodePtr currentNode, node;
     while (i < func.size()) {
-        std::cout << "new step: i = " << i << "\n";
+        //std::cout << "new step: i = " << i << "\n";
         if (func[i] == ' ') {
             ++i;
             continue;
         }
         if ((func[i] >= '0' && func[i] <= '9') || func[i] == '.') {
-            number = readNumber(func, i);
-            currentNode.reset(new ValueNode(number));
-            std::cout << "got num: " << number << "!\n";
+            num = readNumber(func, i);
+            currentNode.reset(new ValueNode(num));
+            //std::cout << "got num: " << number << "!\n";
         } else if (func[i] == '(') {
             tmp = readInbrace(func, i);
-            std::cout << "inbraced: " << tmp << "! Building new tree\n";
-            currentNode = buildTree(tmp);
+            //std::cout << "inbraced: " << tmp << "! Building new tree\n";
+            currentNode = buildTree(tmp, vars);
             //if (currentNode->type == NodeType::OPERATION) {
                 //((OperationNode *)currentNode.get())->priority = 0;
             currentNode->priority = 0;
@@ -272,13 +282,17 @@ FunctionalTree::NodePtr FunctionalTree::buildTree (const std::string &func) {
             tmp = readWord(func, i);
             op = getOperation(tmp);
             if (op == Operation::NOT_AN_OPERATION) {
-                Vars var = Vars::X;
-                currentNode.reset(new VariableNode(var));
-                std::cout << "got var: " << tmp << "!\n";
+                std::vector<std::string>::const_iterator it = std::find(vars.cbegin(), vars.cend(), tmp);
+                idx = std::distance(vars.begin(), it);
+                if (idx == vars.size()) {
+                    throw std::logic_error("Operation \"buildTree\": var \"" + tmp + "\" not found in var list");;
+                }
+                currentNode.reset(new VariableNode(idx));
+                //std::cout << "got var: " << tmp << "!\n";
             } else {
                 currentNode.reset(new OperationNode(op));
                 currentNode->priority = getPriority(op);
-                std::cout << "got operation: " << tmp << "!\n";
+                //std::cout << "got operation: " << tmp << "!\n";
                 //((OperationNode *)currentNode.get())->priority = getPriority(op);
             }
         }
@@ -288,8 +302,9 @@ FunctionalTree::NodePtr FunctionalTree::buildTree (const std::string &func) {
     return node;
 }
 
-FunctionalTree::FunctionalTree (const std::string &func) {
-    root = buildTree(func);
+FunctionalTree::FunctionalTree (const std::string &func, const std::vector<std::string> &vars) {
+    inputCheck(func, vars);
+    root = buildTree(func, vars);
 }
 
 FunctionalTree::FunctionalTree (FunctionalTree &&tree) {
@@ -299,7 +314,11 @@ FunctionalTree::FunctionalTree (FunctionalTree &&tree) {
 FunctionalTree::~FunctionalTree () {}
 
 double FunctionalTree::func (double x) const {
-    return getVal(root, x);
+    return getVal(root, {x});
+}
+
+double FunctionalTree::func (const std::vector<double> &X) const {
+    return getVal(root, X);
 }
 
 void FunctionalTree::printTree (const NodePtr &tmp) const {
