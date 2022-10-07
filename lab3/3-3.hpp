@@ -4,7 +4,6 @@
 #include <vector>
 #include <cstdint>
 #include <functional>
-#include "2-2.hpp"
 #include "LU.hpp"
 
 std::vector<double> LeastSquareMethod (const std::vector<double> &X, const std::vector<double> &Y, uint64_t n);
