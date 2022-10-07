@@ -3,10 +3,11 @@
 
 #include <vector>
 #include <cstdint>
+#include <cmath>
+#include "Matrix.hpp"
+#include "LU.hpp"
 
-std::vector<double> CubeSpline (const std::vector<double> &X, const std::vector<double> &Y);
-double CubeSplineFunc (const std::vector<double> &X, const std::vector<double> &W, double x);
-
-void printPolynom (const std::vector<double> &vec, uint64_t countOfElements);
+Matrix<double> CubeSpline (const std::vector<double> &X, const std::vector<double> &Y);
+double CubeSplineFunc (const std::vector<double> &X, const Matrix<double> &M, double x);
 
 #endif
