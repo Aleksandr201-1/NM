@@ -1,6 +1,6 @@
 #include "FuncMaker.hpp"
 #include <iostream>
-std::vector<std::string> FunctionalTree::operations = {"+", "-", "*", "/", "%", "^", "sin", "cos", "tg", "ctg", "log", "ln", "exp"};
+std::vector<std::string> FunctionalTree::operations = {"+", "-", "*", "/", "%", "^", "sqrt", "sin", "cos", "tan", "cot", "log", "ln", "exp"};
 //std::vector<uint64_t> prioritet = {};
 
 FunctionalTreeNode::FunctionalTreeNode (NodeType type) : type(type), priority(0) {}
@@ -15,7 +15,7 @@ ValueNode::~ValueNode () {}
 VariableNode::VariableNode (uint64_t idx) : FunctionalTreeNode(NodeType::VARIABLE), idx(idx) {}
 VariableNode::~VariableNode () {}
 
-void FunctionalTree::inputCheck (const std::string &func, const std::vector<std::string> &vars) const {
+void FunctionalTree::inputCheck (const std::vector<std::string> &vars) const {
     if (vars.size() > VARIABLE_LIMIT) {
         throw std::logic_error("Operation \"inputCheck\": count of vars limited by " + std::to_string(VARIABLE_LIMIT));
     }
@@ -61,7 +61,7 @@ std::string FunctionalTree::readWord (const std::string &func, uint64_t &i) cons
     std::string str;
     //words
     //std::cout << "reading word...\n";
-    while (((func[i] > 'A' && func[i] < 'Z') || (func[i] > 'a' && func[i] < 'z')) && i < func.size()) {
+    while (((func[i] >= 'A' && func[i] <= 'Z') || (func[i] >= 'a' && func[i] <= 'z')) && i < func.size()) {
         str += func[i];
         //std::cout << "let: " << func[i] << "\n";
         ++i;
@@ -136,13 +136,15 @@ Operation FunctionalTree::getOperation (const std::string &str) const {
 
 uint64_t FunctionalTree::getPriority (Operation op) const {
     switch (op) {
-        case Operation::POW:
-            return 1;
+        case Operation::MUL:
+        case Operation::DIV:
+        case Operation::MOD:
+            return 2;
         case Operation::PLUS:
         case Operation::MINUS:
             return 3;
         default:
-            return 2;
+            return 1;
     }
 }
 
@@ -158,10 +160,10 @@ double FunctionalTree::useOperation (Operation op, double x, double y) const {
             return x / y;
         case Operation::MOD:
             return std::fmod(x, y);
-        case Operation::LOG:
-            return std::log10(x);
-        case Operation::LN:
-            return std::log(x);
+        case Operation::POW:
+            return std::pow(x, y);
+        case Operation::SQRT:
+            return std::sqrt(x);
         case Operation::SIN:
             return std::sin(x);
         case Operation::COS:
@@ -170,8 +172,10 @@ double FunctionalTree::useOperation (Operation op, double x, double y) const {
             return std::tan(x);
         case Operation::CTG:
             return 1.0 / std::tan(x);
-        case Operation::POW:
-            return std::pow(x, y);
+        case Operation::LOG:
+            return std::log10(x);
+        case Operation::LN:
+            return std::log(x);
         case Operation::EXP:
             return std::exp(x);
         default:
@@ -302,9 +306,10 @@ FunctionalTree::NodePtr FunctionalTree::buildTree (const std::string &func, cons
     return node;
 }
 
+FunctionalTree::FunctionalTree () {}
+
 FunctionalTree::FunctionalTree (const std::string &func, const std::vector<std::string> &vars) {
-    inputCheck(func, vars);
-    root = buildTree(func, vars);
+    reset(func, vars);
 }
 
 FunctionalTree::FunctionalTree (FunctionalTree &&tree) {
@@ -312,6 +317,11 @@ FunctionalTree::FunctionalTree (FunctionalTree &&tree) {
 }
 
 FunctionalTree::~FunctionalTree () {}
+
+void FunctionalTree::reset (const std::string &func, const std::vector<std::string> &vars) {
+    inputCheck(vars);
+    root = buildTree(func, vars);
+}
 
 double FunctionalTree::func (double x) const {
     return getVal(root, {x});
@@ -354,6 +364,13 @@ void FunctionalTree::printTree () const {
 }
 
 //void FunctionalTree::simplify () {}
+
+double FunctionalTree::operator() (double x) const {
+    return getVal(root, {x});
+}
+double FunctionalTree::operator() (const std::vector<double> &X) const {
+    return getVal(root, X);
+}
 
 FunctionalTree &FunctionalTree::operator= (FunctionalTree &&tree) {
     if (this == &tree) {

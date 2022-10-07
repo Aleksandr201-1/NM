@@ -3,9 +3,12 @@
 #include <cstdlib>
 #include <cmath>
 #include <thread>
+#include "FuncMaker.hpp"
 #include "gnuplot-iostream.h"
 #include "2-1.hpp"
 #include "2-2.hpp"
+
+FunctionalTree tree_func1, tree_func2, tree_func3, tree_fi1, tree_fi2, tree_fi3;
 
 template <class T>
 void printVector(const std::vector<T> &vec) {
@@ -22,44 +25,48 @@ const double a = 3.0;
 //2.1
 //x^6 - 5*x - 2
 double function (double x) {
-    return std::pow(x, 6) - 5 * x - 2;
+    //return std::pow(x, 6) - 5 * x - 2;
+    return tree_func1(x);
     //return std::sqrt(x + 2) - 2 * std::cos(x);
 }
 
 //(5x + 2)^(1/6)
 double fi (double x) {
-    return std::pow(5.0 * x + 2.0, 1.0 / 6.0);
+    //return std::pow(5.0 * x + 2.0, 1.0 / 6.0);
+    return tree_fi1(x);
+    //return -(function(x) - x);
 }
 
 //2.2
 //ax^2 - x + y^2 - 1
 double f1(const std::vector<double> &x) {
-    return a * x[0] * x[0] - x[0] + x[1] * x[1] - 1;
+    //return a * x[0] * x[0] - x[0] + x[1] * x[1] - 1;
+    return tree_func2(x);
 }
 
 //y - tg(x)
 double f2(const std::vector<double> &x) {
-    return x[1] - std::tan(x[0]);
+    //return x[1] - std::tan(x[0]);
+    return tree_func3(x);
 }
 
 //ax^2 + y^2 - 1
 double fi1(const std::vector<double> &x) {
-    return a * x[0] * x[0] + x[1] * x[1] - 1;
+    //return a * x[0] * x[0] + x[1] * x[1] - 1;
+    //return tree_fi2(x);
+    return -(f1(x) - x[0]);
 }
 
 //tg(x)
 double fi2(const std::vector<double> &x) {
-    return std::tan(x[0]);
+    //return tree_fi3(x);
+    //return std::tan(x[0]);
+    return -(f2(x) - x[1]);
 }
 
 void plot (const std::vector<std::string> &func) {
     static std::vector<std::string> colors = {"red", "green", "blue"};
     Gnuplot gp;
-    if (func.size() > 1) {
-    //    gp << "set multiplot";
-    }
-    //gp << "set multiplot";
-    //gp << "set nooutput\n";
     gp << "set xlabel \"X\"\n";
     gp << "set ylabel \"Y\"\n";
     gp << "set xzeroaxis lw 1\n";
@@ -78,21 +85,23 @@ void plot (const std::vector<std::string> &func) {
             gp << ",";
         }
     }
-    //gp << "plot 3 * x**2 - x + y**2 - 1 title \"Our plot\"  lc rgb \"red\"\n";
-    //gp << "f(x,y) = x**2 + y**2\n";
-    //gp << "plot f(x,y) title \"Our plot\"  lc rgb \"red\"\n";
-    
-    //gp << "plot " << func << " title \"Our plot\"  lc rgb \"red\"\n";
-    //gp.close();
-    //gp.rdbuf(std::cerr.rdbuf());
 }
 
 int main () {
     //2.1
-    //std::cout << "System solve:";
+    std::cout << "=====2.1=====\n";
     std::cout.setf(std::ios_base::fixed);
-    std::vector<std::string> stringFunc = {"x**6 - 5*x - 2"};
-    //std::thread thr1(plot, stringFunc);
+    std::vector<std::string> stringFunc;
+    std::string str;
+
+    std::cout << "Enter function: ";
+    std::getline(std::cin, str);
+    tree_func1.reset(str, {"x"});
+    stringFunc.push_back(str);
+
+    std::cout << "Enter function fi: ";
+    std::getline(std::cin, str);
+    tree_fi1.reset(str, {"x"});
 
     plot(stringFunc);
     double approx, x0, y0, a, b;
@@ -116,12 +125,25 @@ int main () {
     } catch (std::exception &exp) {
         std::cerr << exp.what() << "\n";
     }
-    //thr1.join();
 
     //2.2
-    //stringFunc = "tg(x)";
+    std::cout << "=====2.2=====\n";
+    std::cout << "Enter system:\n";
+    std::cin.ignore();
+    std::getline(std::cin, str);
+    //systemOfFunc.push_back(str);
+    tree_func2.reset(str, {"x", "y"});
+    std::getline(std::cin, str);
+    //systemOfFunc.push_back(str);
+    tree_func3.reset(str, {"x", "y"});
+
+    std::cout << "Enter system fi:\n";
+    std::cin.ignore();
+    std::getline(std::cin, str);
+    tree_fi2.reset(str, {"x", "y"});
+    std::getline(std::cin, str);
+    tree_fi3.reset(str, {"x", "y"});
     std::vector<std::string> systemOfFunc = {"tan(x)", "sqrt(x + 1 - 3.0*x**2)"};
-    //std::thread thr2(plot, system);
     plot(systemOfFunc);
 
     std::cout << "\nEnter approximation: ";
@@ -156,6 +178,5 @@ int main () {
         std::cerr << exp.what() << "\n";
     }
 
-    //thr2.join();
     return 0;
 }

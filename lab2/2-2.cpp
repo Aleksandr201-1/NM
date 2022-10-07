@@ -1,5 +1,5 @@
 #include "2-2.hpp"
-#include <iostream>
+
 std::tuple<Matrix<double>, Matrix<double>, Matrix<double>> createAAJ (const System &system, const std::vector<double> &x) {
     Matrix<double> A1(x.size()), A2(x.size()), J(x.size());
     for (uint64_t i = 0; i < x.size(); ++i) {
@@ -52,7 +52,7 @@ double findQ (const System &system, const std::vector<double> &x) {
     for (uint64_t i = 0; i < x.size(); ++i) {
         double sum = 0;
         for (uint64_t j = 0; j < x.size(); ++j) {
-            sum += std::abs(derivative(system[i], x, i));
+            sum += std::abs(derivative(system[i], x, j));
         }
         if (sum > q) {
             q = sum;
@@ -67,11 +67,7 @@ std::pair<std::vector<double>, uint64_t> SI (const System &system, const std::ve
         throw std::runtime_error("SI: q > 1.0");
     }
     std::vector<double> ans(x), tmp(x);
-    //for (uint64_t i = 0; i < tmp.size(); ++i) {
-    //    tmp[i] += 0.5;
-    //}
     uint64_t count = 0;
-    //std::cout << "Q: " << q << "\n";
     do {
         maxDiff = 0;
         for (uint64_t i = 0; i < ans.size(); ++i) {
@@ -81,10 +77,6 @@ std::pair<std::vector<double>, uint64_t> SI (const System &system, const std::ve
             }
         }
         ans = tmp;
-        // for (auto el : ans) {
-        //     std::cout << el << " ";
-        // }
-        // std::cout << "\n";
         ++count;
         if (count > ITERATION_CAP) {
             throw std::runtime_error("SI: the maximum number of iterations has been reached");

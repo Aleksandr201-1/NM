@@ -26,6 +26,7 @@ enum class Operation {
     DIV,    // /
     MOD,    // %
     POW,    // ^
+    SQRT,   // sqrt
     SIN,    // sin
     COS,    // cos
     TAN,    // tan
@@ -87,7 +88,7 @@ class FunctionalTree {
     private:
         using NodePtr = std::unique_ptr<FunctionalTreeNode>;
     private:
-        void inputCheck (const std::string &func, const std::vector<std::string> &vars) const; 
+        void inputCheck (const std::vector<std::string> &vars) const; 
         std::string readOperation (const std::string &func, uint64_t &i) const;
         std::string readWord (const std::string &func, uint64_t &i) const;
         double readNumber (const std::string &func, uint64_t &i) const;
@@ -100,15 +101,19 @@ class FunctionalTree {
         NodePtr buildTree (const std::string &func, const std::vector<std::string> &vars);
         void printTree (const NodePtr &tmp) const;
     public:
+        FunctionalTree ();
         FunctionalTree (const std::string &func, const std::vector<std::string> &vars);
         //FunctionalTree (const FunctionalTree &image);
         FunctionalTree (FunctionalTree &&image);
         ~FunctionalTree ();
+        void reset (const std::string &func, const std::vector<std::string> &vars);
         double func (double x) const;
         double func (const std::vector<double> &X) const;
         void printTree () const;
         //void simplify ();
         //FunctionalTree& operator= (const FunctionalTree &image);
+        double operator() (double x) const;
+        double operator() (const std::vector<double> &X) const;
         FunctionalTree &operator= (FunctionalTree &&tree);
     private:
         static std::vector<std::string> operations;

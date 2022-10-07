@@ -6,7 +6,7 @@ project(lab1 VERSION 1.0 LANGUAGES CXX)
 set(BOOST_LIBS boost_iostreams boost_system boost_filesystem)
 
 set(MAIN main)
-set(MAIN_SOURCE main.cpp General.hpp General.cpp 2-1.hpp 2-1.cpp 2-2.hpp 2-2.cpp)
+set(MAIN_SOURCE main.cpp General.hpp General.cpp FuncMaker.hpp FuncMaker.cpp 2-1.hpp 2-1.cpp 2-2.hpp 2-2.cpp)
 #set(MAIN_SOURCE Graphic.hpp Graphic.cpp main.cpp)
 
 
