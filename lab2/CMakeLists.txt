@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(lab1 VERSION 1.0 LANGUAGES CXX)
+project(lab2 VERSION 1.0 LANGUAGES CXX)
 
 #set(SFML_LIBS sfml-graphics sfml-window sfml-audio sfml-system)
 set(BOOST_LIBS boost_iostreams boost_system boost_filesystem)
