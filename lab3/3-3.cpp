@@ -42,6 +42,14 @@ double ErrorSquareSum (const std::vector<double> &X, const std::vector<double> &
     return ans;
 }
 
+double LSMFunc (const std::vector<double> &coeff, double x) {
+    double ans = 0;
+    for (uint64_t i = 0; i < coeff.size(); ++i) {
+        ans += coeff[i] * std::pow(x, i);
+    }
+    return ans;
+}
+
 std::string LSMToText (const std::vector<double> &poly) {
     std::string func = std::to_string(poly[0]);
     for (uint64_t i = 1; i < poly.size(); ++i) {
