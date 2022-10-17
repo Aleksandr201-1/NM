@@ -57,35 +57,41 @@ int main () {
     };
     uint64_t n = 0;
     std::string str_func;
+    double check;
 
     //3.1
     std::cout << "=====3.1=====\n";
-    std::cout << "Введите функцию:\n";
+    std::cout << "Введите функцию для проверки:\n";
     std::getline(std::cin, str_func);
     FunctionalTree func1(str_func, {"x"});
     auto to_poly = func_maker(std::move(func1));
     //std::vector<double> X = {0.1, 0.5, 0.9, 1.3, 1.7, 2.1, 2.5, 2.9, 3.3};
     //std::vector<double> X = {0.1, 0.5, 0.9, 1.3};
-    std::vector<double> X;
-    std::cout << "Введите размер вектора и вектор:\n";
+    std::cout << "Введите размер векторов:\n";
     std::cin >> n;
-    for (uint64_t i = 0; i < n; ++i) {
-        double tmp;
-        std::cin >> tmp;
-        X.push_back(tmp);
+    std::vector<double> X, Y;
+    for (uint64_t i = 0; i < 2; ++i) {
+        X.clear();
+        std::cout << "Введите " << i + 1 << "-й вектор:\n";
+        for (uint64_t i = 0; i < n; ++i) {
+            double tmp;
+            std::cin >> tmp;
+            X.push_back(tmp);
+        }
+        Y = getY(X, to_poly);
+        std::vector<double> L = Lagrange(X, Y);
+        std::vector<double> N = Newton(X, to_poly);
+        std::cout << "Введите точку для проверки:\n";
+        std::cin >> check;
+        std::string poly = printPolynom(L, X, Method::LAGRANGE);
+        std::cout << "Полином Лагранжа: " << poly << "\n";
+        poly = printPolynom(N, X, Method::NEWTON);
+        std::cout << "Полином Ньютона: " << poly << "\n";
+        //std::cout << LagrangeFunc(X, L, check) << " " << to_poly(check) << "\n";
+        //std::cout << NewtonFunc(X, N, check) << " " << to_poly(check) << "\n";
+        std::cout << "\nПогрешность Лагранжа: " << std::abs(LagrangeFunc(X, L, check) - to_poly(check)) << "\n";
+        std::cout << "\nПогрешность Ньютона: " << std::abs(NewtonFunc(X, N, check) - to_poly(check)) << "\n";
     }
-    std::vector<double> Y = getY(X, to_poly);
-    std::vector<double> L = Lagrange(X, Y);
-    std::vector<double> N = Newton(X, to_poly);
-    double check;
-    std::cout << "Введите точку для проверки:\n";
-    std::cin >> check;
-    std::string poly = printPolynom(L, X, Method::LAGRANGE);
-    std::cout << "Полином Лагранжа: " << poly << "\n";
-    poly = printPolynom(N, X, Method::NEWTON);
-    std::cout << "Полином Ньютона: " << poly << "\n";
-    std::cout << "\nПогрешность Лагранжа: " << std::abs(LagrangeFunc(X, L, check) - to_poly(check) ) << "\n";
-    std::cout << "\nПогрешность Ньютона: " << std::abs(NewtonFunc(X, N, check) - to_poly(check)) << "\n";
     //3.2
     std::cout << "=====3.2=====\n";
     std::cout << "Введите размер векторов и векторы:\n";

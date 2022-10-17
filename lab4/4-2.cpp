@@ -20,23 +20,22 @@ std::pair<std::vector<double>, std::vector<double>> Shoot (const Task &task, dou
     oldTask.b = n;
     auto next = Runge(oldTask, h);
     oldTask.a = task.a;
+    uint64_t count = 0;
     while (!stop(next.second.back(), task.b, 0.01)) {
         double tmp = n;
-        std::cout << "it\n";
-        std::cout << "old n: " << n_last << "\nnew n: " << n << "\n";
         n = newN(n_last, n, prev.second, next.second, task.b);
         n_last = tmp;
         prev = next;
         oldTask.b = n;
         next = Runge(oldTask, h);
-        printVector(next.first);
-        printVector(next.second);
-        //return next;
+        ++count;
+        if (count > ITERATION_CAP) {
+            next.first.clear();
+            next.second.clear();
+            break;
+        }
     }
     return next;
-    //double X1 = task.X1, X2 = task.X2, a = task.a, b = task.b;
-    //const std::vector<FunctionalTree> &trees = task.trees;
-    //return {{trees[0]({a, b})}, {trees[0]({X1 + h, X2})}};
 }
 
 std::pair<std::vector<double>, std::vector<double>> FiniteDifference (const Task &task, double h) {
@@ -47,24 +46,6 @@ std::pair<std::vector<double>, std::vector<double>> FiniteDifference (const Task
     for (double i = X1; i <= X2; i += h) {
         X.push_back(i);
     }
-    // std::cout << "y'' coeff: ";
-    // trees[0].getCoeff(1).printFunc();
-    // std::cout << "\n";
-    // std::cout << "y' coeff: ";
-    // trees[0].getCoeff(2).printFunc();
-    // std::cout << "\n";
-    // std::cout << "y coeff: ";
-    // trees[0].getCoeff(3).printFunc();
-    // std::cout << "\n";
-    // std::cout << "over shit:\n";
-    // trees[2].getCoeff(0).printFunc();
-    // std::cout << "\n";
-    // trees[2].getCoeff(1).printFunc();
-    // std::cout << "\n";
-    // trees[3].getCoeff(0).printFunc();
-    // std::cout << "\n";
-    // trees[3].getCoeff(1).printFunc();
-    // std::cout << "\ncoefs: " << a << " " << b << " " << X1 << " " << X2 << "\n";
     auto p = [&] (double x) -> double {
         static auto c1 = trees[0].getCoeff(2);
         static auto c2 = trees[0].getCoeff(1);

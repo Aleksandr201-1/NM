@@ -35,5 +35,4 @@ double IntegralSimpson (const std::function<double(double)> &f, double X1, doubl
 
 double IntegralRunge (double ans1, double ans2, double k, double p) {
     return std::abs((ans1 - ans2) / (std::pow(k, p) - 1));
-    //return ans1 + (ans1 - ans2) / (std::pow(k, p) - 1);
 }

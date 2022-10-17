@@ -7,12 +7,14 @@
 #include <cmath>
 #include <memory>
 #include <algorithm>
+#include <iostream>
 
 //PRIORITY
 //val,() 0
 //^ 1
-//*,/,%,sin,cos,...
-//+- 3 
+//sin,cos,... 2
+//*,/,% 3
+//+- 4
 enum class NodeType {
     OPERATION,
     VALUE,
@@ -29,18 +31,18 @@ enum class Operation {
     SQRT,   // sqrt
     SIN,    // sin
     COS,    // cos
-    TAN,    // tan
+    TAN,    // tg
     CTG,    // ctg
+    ASIN, //arcsin
+    ACOS, //arccos
+    ATAN,  //arctg
+    ACOT, //arcctg
     LOG,    // log_10
     LN,     // log_e, ln
     EXP,    // exp
+    ABS,    // abs, ||
     NOT_AN_OPERATION
 };
-
-// enum class Vars {
-//     X,
-//     Y
-// };
 
 class FunctionalTree;
 
@@ -62,7 +64,6 @@ class OperationNode : public FunctionalTreeNode {
         friend FunctionalTree; 
     private:
         Operation op;
-        //uint64_t priority;
 };
 
 class ValueNode : public FunctionalTreeNode {
@@ -95,29 +96,37 @@ class FunctionalTree {
         std::string readInbrace (const std::string &func, uint64_t &i) const;
         Operation getOperation (const std::string &str) const;
         uint64_t getPriority (Operation op) const;
-        double useOperation (Operation op, double x, double y = 0.0) const;
+        double useOperation (Operation op, double x, double y) const;
         double getVal (const NodePtr &node, const std::vector<double> &X) const;
         void addToTree (NodePtr &root, NodePtr &toAdd);
         NodePtr buildTree (const std::string &func, const std::vector<std::string> &vars);
-        void printTree (const NodePtr &tmp) const;
+        void printTree (const NodePtr &node) const;
+        void printFunc (const NodePtr &node) const;
+        NodePtr copyTree (const NodePtr &node) const;
+        FunctionalTree (const NodePtr &node);
+        FunctionalTree (NodePtr &&tree);
     public:
         FunctionalTree ();
         FunctionalTree (const std::string &func, const std::vector<std::string> &vars);
-        //FunctionalTree (const FunctionalTree &image);
-        FunctionalTree (FunctionalTree &&image);
+        //FunctionalTree (const std::string &func, const std::string &var);
+        FunctionalTree (const FunctionalTree &tree);
+        FunctionalTree (FunctionalTree &&tree);
         ~FunctionalTree ();
         void reset (const std::string &func, const std::vector<std::string> &vars);
         double func (double x) const;
         double func (const std::vector<double> &X) const;
+        FunctionalTree getCoeff (uint64_t idx) const;
         void printTree () const;
+        void printFunc () const;
         //void simplify ();
-        //FunctionalTree& operator= (const FunctionalTree &image);
+        FunctionalTree &operator= (const FunctionalTree &tree);
         double operator() (double x) const;
         double operator() (const std::vector<double> &X) const;
         FunctionalTree &operator= (FunctionalTree &&tree);
     private:
-        static std::vector<std::string> operations;
-        static const uint64_t VARIABLE_LIMIT = 3;
+        static const std::vector<std::string> operations;
+        static const uint64_t VARIABLE_LIMIT = 5;
+        //std::vector<std::string> vars;
         NodePtr root;
 };
 

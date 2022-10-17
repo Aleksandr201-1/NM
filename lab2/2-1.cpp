@@ -22,11 +22,14 @@ std::pair<double, uint64_t> Newton (double x, double approx, double (*function)(
 }
 
 
-bool checkSI (double a, double b, double (*function)(double)) {
+bool checkSI (double a, double b, double (*function)(double), double q) {
     double e = findEpsillon(), x = a;
     while (x + e < b) {
         x += e;
-        if (derivative(function, x) > 1.0) {
+        if (derivative(function, x) > q) {
+            return false;
+        }
+        if (function(x) < a || function(x) > b) {
             return false;
         }
     }
@@ -34,13 +37,13 @@ bool checkSI (double a, double b, double (*function)(double)) {
 }
 
 std::pair<double, uint64_t> SI (double x, double a, double b, double approx, double (*fi)(double)) {
-    if (!checkSI(a, b, fi)) {
-        throw std::runtime_error("SI: Incorrect function fi(x). fi'(x) > 1, x in (a, b)");
+    double q = std::max(std::abs(derivative(fi, a)), std::abs(derivative(fi, b)));
+    if (!checkSI(a, b, fi, q)) {
+        throw std::runtime_error("SI: Incorrect function fi(x). fi'(x) > q, x in (a, b) or fi(x) not in (a, b)");
     }
-    double q = std::max(std::abs(derivative(fi, a, 1)), std::abs(derivative(fi, b, 1)));
     uint64_t count = 1;
     double x2 = fi(x);
-    while ((std::abs(q / (1 - q)) * std::abs(x2 - x)) > approx) {
+    while ((q / (1 - q)) * (std::abs(x2 - x)) > approx) {
         x = x2;
         x2 = fi(x2);
         ++count;
@@ -48,5 +51,5 @@ std::pair<double, uint64_t> SI (double x, double a, double b, double approx, dou
             throw std::runtime_error("SI: the maximum number of iterations has been reached");
         }
     }
-    return {fi(x2), count};
+    return {fi(x2), count + 1};
 }

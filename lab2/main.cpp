@@ -20,47 +20,29 @@ void printVector(const std::vector<T> &vec) {
     }
 }
 
-const double a = 3.0;
-
 //2.1
-//x^6 - 5*x - 2
 double function (double x) {
-    //return std::pow(x, 6) - 5 * x - 2;
     return tree_func1(x);
-    //return std::sqrt(x + 2) - 2 * std::cos(x);
 }
 
-//(5x + 2)^(1/6)
 double fi (double x) {
-    //return std::pow(5.0 * x + 2.0, 1.0 / 6.0);
     return tree_fi1(x);
-    //return -(function(x) - x);
 }
 
 //2.2
-//ax^2 - x + y^2 - 1
 double f1(const std::vector<double> &x) {
-    //return a * x[0] * x[0] - x[0] + x[1] * x[1] - 1;
     return tree_func2(x);
 }
 
-//y - tg(x)
 double f2(const std::vector<double> &x) {
-    //return x[1] - std::tan(x[0]);
     return tree_func3(x);
 }
 
-//ax^2 + y^2 - 1
 double fi1(const std::vector<double> &x) {
-    //return a * x[0] * x[0] + x[1] * x[1] - 1;
-    //return tree_fi2(x);
     return -(f1(x) - x[0]);
 }
 
-//tg(x)
 double fi2(const std::vector<double> &x) {
-    //return tree_fi3(x);
-    //return std::tan(x[0]);
     return -(f2(x) - x[1]);
 }
 
@@ -72,8 +54,8 @@ void plot (const std::vector<std::string> &func) {
     gp << "set xzeroaxis lw 1\n";
     gp << "set yzeroaxis lw 1\n";
     gp << "set grid\n";
-    gp << "set yrange [0:5]\n";
-    gp << "set xrange[0:5]\n";
+    gp << "set yrange [-1:5]\n";
+    gp << "set xrange[-1:5]\n";
     gp << "set title \"Plot\" font \"Helvetica Bold, 20\"\n";
     
     gp << "plot ";
@@ -87,6 +69,17 @@ void plot (const std::vector<std::string> &func) {
     }
 }
 
+std::string readLine () {
+    std::string str;
+    while (str.empty()) {
+        std::getline(std::cin, str);
+        if (!str.empty() && str[0] == '#') {
+            str = "";
+        }
+    }
+    return str;
+}
+
 int main () {
     //2.1
     std::cout << "=====2.1=====\n";
@@ -94,22 +87,22 @@ int main () {
     std::vector<std::string> stringFunc;
     std::string str;
 
-    std::cout << "Enter function: ";
-    std::getline(std::cin, str);
+    std::cout << "Enter function:\n";
+    str = readLine();
     tree_func1.reset(str, {"x"});
     stringFunc.push_back(str);
 
-    std::cout << "Enter function fi: ";
-    std::getline(std::cin, str);
+    std::cout << "Enter function fi:\n";
+    str = readLine();
     tree_fi1.reset(str, {"x"});
 
     plot(stringFunc);
     double approx, x0, y0, a, b;
-    std::cout << "\nEnter approximation: ";
+    std::cout << "\nEnter approximation:\n";
     std::cin >> approx;
-    std::cout << "Enter begining point: ";
+    std::cout << "Enter begining point:\n";
     std::cin >> x0;
-    std::cout << "Enter graph boundaries: ";
+    std::cout << "Enter graph boundaries:\n";
     std::cin >> a >> b;
 
     try {
@@ -129,26 +122,25 @@ int main () {
     //2.2
     std::cout << "=====2.2=====\n";
     std::cout << "Enter system:\n";
-    std::cin.ignore();
-    std::getline(std::cin, str);
-    //systemOfFunc.push_back(str);
+    str = readLine();
     tree_func2.reset(str, {"x", "y"});
-    std::getline(std::cin, str);
-    //systemOfFunc.push_back(str);
+    str = readLine();
     tree_func3.reset(str, {"x", "y"});
 
     std::cout << "Enter system fi:\n";
-    std::cin.ignore();
-    std::getline(std::cin, str);
+    str = readLine();
     tree_fi2.reset(str, {"x", "y"});
-    std::getline(std::cin, str);
+    str = readLine();
     tree_fi3.reset(str, {"x", "y"});
-    std::vector<std::string> systemOfFunc = {"tan(x)", "sqrt(x + 1 - 3.0*x**2)"};
+    std::vector<std::string> systemOfFunc = {"tan(x)", "sqrt(x + 1 - 3.0*x**2)"}; //24
+    //std::vector<std::string> systemOfFunc = {"8 / (x**2 + 4)", "-sqrt(4 - (x - 1)**2) + 1"}; //1
+    //std::vector<std::string> systemOfFunc = {"acos(-x - 0.9)", "log10(x + 1) + 3"}; //2
+    //std::vector<std::string> systemOfFunc = {"sqrt(9 - x**2)", "log(x + 3)"}; //3
     plot(systemOfFunc);
 
-    std::cout << "\nEnter approximation: ";
+    std::cout << "\nEnter approximation:\n";
     std::cin >> approx;
-    std::cout << "Enter begining points: ";
+    std::cout << "Enter begining points:\n";
     std::cin >> x0 >> y0;
     std::cout << "\n";
 
