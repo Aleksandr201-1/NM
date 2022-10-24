@@ -9,5 +9,6 @@
 
 Matrix<double> CubeSpline (const std::vector<double> &X, const std::vector<double> &Y);
 double CubeSplineFunc (const std::vector<double> &X, const Matrix<double> &M, double x);
+std::string CubeSplineToText (const std::vector<double> &X, const Matrix<double> &M, double x);
 
 #endif

@@ -48,6 +48,41 @@ void plot (const std::vector<std::string> &func, const std::vector<double> point
     }
 }
 
+void plotCube (const std::vector<std::string> &func, const std::vector<std::pair<double, double>> points) {
+    static std::vector<std::string> colors = {"red"};
+    Gnuplot gp;
+
+    gp << "set xlabel \"X\"\n";
+    gp << "set ylabel \"Y\"\n";
+    gp << "set xzeroaxis lw 1\n";
+    gp << "set yzeroaxis lw 1\n";
+    gp << "plot_if_in_range(y,x,lower,upper) = (x>=lower && x<=upper)?(y):(1.0/0)\n";
+    //gp << "set yrange[-10:10]\n";
+    //gp << "set xrange[0.1:1.7]\n";
+    gp << "set xrange[" << points.front().first - 0.5 << ":" << points.back().first + 0.5 << "]\n";
+    gp << "set grid\n";
+    gp << "set title \"Plot\" font \"Helvetica Bold, 20\"\n";
+    
+    gp << "plot ";
+    for (uint64_t i = 0; i < func.size(); ++i) {
+        gp << "plot_if_in_range(" << func[i] << ", x, " << points[i].first - 0.05 << ", " << points[i + 1].first + 0.05 << ")";
+        //gp << "[" << points[i] << ":" << points[i+1] << "]" << func[i] << " title \"polynom " << i + 1 << "\"  lc rgb \"" << colors[i % colors.size()] << "\"";
+        if (i == func.size() - 1) {
+            if (points.size()) {
+                gp << ", '-' " << " title \"our func\n";
+                for (uint64_t j = 0; j < points.size(); j += 1) {
+                    gp << points[j].first << " " << points[j].second << "\n";
+                    //gp << points[j] << "\n";
+                }
+                gp << "e\n";
+            }
+            gp << "\n";
+        } else {
+            gp << ",";
+        }
+    }
+}
+
 int main () {
     std::cout.precision(PRECISION);
     std::cout.setf(std::ios_base::fixed);
@@ -116,6 +151,15 @@ int main () {
     auto CS = CubeSpline(X, Y);
     std::cout << "Функция кубического сплайна Func(" << check << "): " << CubeSplineFunc(X, CS, check) << "\n";
     std::cout << "Настоящая Func(" << check << "): " << to_poly(check) << "\n";
+    std::vector<std::string> cube;
+    std::vector<std::pair<double, double>> p;
+    for (uint64_t i = 0; i < X.size() - 1; ++i) {
+        double tmp = (X[i + 1] + X[i]) / 2;
+        cube.push_back(CubeSplineToText(X, CS, tmp));
+        p.push_back(std::make_pair(X[i], Y[i]));
+    }
+    p.push_back(std::make_pair(X.back(), Y.back()));
+    plotCube(cube, p);
 
     //3.3
     std::cout << "=====3.3=====\n";

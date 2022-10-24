@@ -76,7 +76,6 @@ std::vector<double> LUsolveSLAE (const Matrix<T> &matrix, const std::vector<T> &
         exit(-1);
     }
     if (n != ans.size()) {
-        //:cout
         std::cerr << "Matrix and vector have different sizes. Stop working.\n";
         exit(-1);
     }

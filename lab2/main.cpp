@@ -136,7 +136,9 @@ int main () {
     //std::vector<std::string> systemOfFunc = {"8 / (x**2 + 4)", "-sqrt(4 - (x - 1)**2) + 1"}; //1
     //std::vector<std::string> systemOfFunc = {"acos(-x - 0.9)", "log10(x + 1) + 3"}; //2
     //std::vector<std::string> systemOfFunc = {"sqrt(9 - x**2)", "log(x + 3)"}; //3
+    //std::cout << "\x1B[33m";
     plot(systemOfFunc);
+    //std::cout << "\x1B[37m";
 
     std::cout << "\nEnter approximation:\n";
     std::cin >> approx;

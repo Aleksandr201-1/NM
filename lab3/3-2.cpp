@@ -45,3 +45,15 @@ double CubeSplineFunc (const std::vector<double> &X, const Matrix<double> &M, do
     }
     return ans;
 }
+
+std::string CubeSplineToText (const std::vector<double> &X, const Matrix<double> &M, double x) {
+    std::string str = "0";
+    uint64_t i = 0;
+    while (x > X[i + 1]) {
+        ++i;
+    }
+    for (uint64_t j = 0; j < M.size().m; ++j) {
+        str += "+" + toString(M(i, j), 2) + "* (x - " + toString(X[i], 2) + ") ** " + toString(j, 2);
+    }
+    return str;
+}

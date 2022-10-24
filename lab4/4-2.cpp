@@ -11,14 +11,17 @@ double newN (double n_last, double n, const std::vector<double> &ans_last, const
 }
 
 std::pair<std::vector<double>, std::vector<double>> Shoot (const Task &task, double h) {
-    double n = 0.8, n_last = 1;
+    //double n = 0.8, n_last = 1;
+    double n = task.X1, n_last = task.X2;
     Task oldTask = task;
     oldTask.a = n_last;
     oldTask.b = n_last;
-    auto prev = Runge(oldTask, h);
+    //auto prev = Runge(oldTask, h);
+    auto prev = FiniteDifference(oldTask, h);
     oldTask.a = n;
     oldTask.b = n;
-    auto next = Runge(oldTask, h);
+    //auto next = Runge(oldTask, h);
+    auto next = FiniteDifference(oldTask, h);
     oldTask.a = task.a;
     uint64_t count = 0;
     while (!stop(next.second.back(), task.b, 0.01)) {
@@ -27,7 +30,8 @@ std::pair<std::vector<double>, std::vector<double>> Shoot (const Task &task, dou
         n_last = tmp;
         prev = next;
         oldTask.b = n;
-        next = Runge(oldTask, h);
+        //next = Runge(oldTask, h);
+        next = FiniteDifference(oldTask, h);
         ++count;
         if (count > ITERATION_CAP) {
             next.first.clear();

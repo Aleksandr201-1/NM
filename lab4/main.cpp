@@ -120,6 +120,7 @@ int main () {
     } else {
         std::cout << "Не получается решить задачу методом стрельбы\n";
     }
+    auto func2 = LeastSquareMethod(res1.first, res1.second, 3);
 
     std::cout << "\n=====Конечно-разностный метод=====\n";
     res1 = FiniteDifference(task, h);
@@ -130,6 +131,7 @@ int main () {
     printVector(res1.second);
     std::cout << "Погрешность: " << RungeRomberg(res1.second[2], res2.second[1]) << "\n";
     func = LeastSquareMethod(res1.first, res1.second, 3);
+    //plot({LSMToText(func), checkSTR, LSMToText(func2)}, res1.first[0], res1.first.back());
     plot({LSMToText(func), checkSTR}, res1.first[0], res1.first.back());
 
     //double x = 0;

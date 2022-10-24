@@ -81,6 +81,6 @@ std::pair<std::vector<double>, uint64_t> SI (const System &system, const std::ve
         if (count > ITERATION_CAP) {
             throw std::runtime_error("SI: the maximum number of iterations has been reached");
         }
-    } while ((q / (1 - q)) * maxDiff > e);
+    } while (std::abs(q / (1 - q)) * maxDiff > e);
     return {ans, count};
 }
