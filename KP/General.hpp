@@ -9,7 +9,7 @@
 #include <functional>
 #include <iostream>
 
-const uint64_t ITERATION_CAP = 20;
+const uint64_t ITERATION_CAP = 200;
 const uint64_t PRECISION = 2;
 
 void printVector(const std::vector<double> &vec);

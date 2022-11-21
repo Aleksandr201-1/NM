@@ -116,6 +116,7 @@ class FunctionalTree {
         double func (double x) const;
         double func (const std::vector<double> &X) const;
         FunctionalTree getCoeff (uint64_t idx) const;
+        FunctionalTree getDiv () const;
         void printTree () const;
         void printFunc () const;
         //void simplify ();

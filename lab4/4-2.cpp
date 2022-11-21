@@ -11,16 +11,13 @@ double newN (double n_last, double n, const std::vector<double> &ans_last, const
 }
 
 std::pair<std::vector<double>, std::vector<double>> Shoot (const Task &task, double h) {
-    //double n = 0.8, n_last = 1;
     double n = task.X1, n_last = task.X2;
     Task oldTask = task;
     oldTask.a = n_last;
     oldTask.b = n_last;
-    //auto prev = Runge(oldTask, h);
     auto prev = FiniteDifference(oldTask, h);
     oldTask.a = n;
     oldTask.b = n;
-    //auto next = Runge(oldTask, h);
     auto next = FiniteDifference(oldTask, h);
     oldTask.a = task.a;
     uint64_t count = 0;
@@ -30,7 +27,6 @@ std::pair<std::vector<double>, std::vector<double>> Shoot (const Task &task, dou
         n_last = tmp;
         prev = next;
         oldTask.b = n;
-        //next = Runge(oldTask, h);
         next = FiniteDifference(oldTask, h);
         ++count;
         if (count > ITERATION_CAP) {
@@ -75,9 +71,6 @@ std::pair<std::vector<double>, std::vector<double>> FiniteDifference (const Task
         S(0, 0) = c1;
         c[0] = a;
     } else {
-        // S(0, 0) = c1 / c0 * h - 1;
-        // S(0, 1) = 1;
-        // c[0] = a / c0 * h;
         S(0, 0) = c1 / c0 * 2 * h - 3;
         S(0, 1) = 4;
         S(0, 2) = -1;
@@ -95,9 +88,6 @@ std::pair<std::vector<double>, std::vector<double>> FiniteDifference (const Task
         S(n - 1, n - 1) = c1;
         c[n - 1] = b;
     } else {
-        // S(n - 1, n - 2) = -1;
-        // S(n - 1, n - 1) = c1 / c0 * h + 1;
-        // c[n - 1] = b / c0 * h;
         S(n - 1, n - 3) = 1;
         S(n - 1, n - 2) = -4;
         S(n - 1, n - 1) = c1 / c0 * 2 * h + 3;

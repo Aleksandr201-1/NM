@@ -506,6 +506,14 @@ FunctionalTree FunctionalTree::getCoeff (uint64_t idx) const {
     // return FunctionalTree(tmp->right->left);
 }
 
+FunctionalTree FunctionalTree::getDiv () const {
+    if (root->type == NodeType::OPERATION) {
+        return FunctionalTree(root->right);
+    } else {
+        return FunctionalTree();
+    }
+}
+
 void FunctionalTree::printTree () const {
     printTree(root);
 }

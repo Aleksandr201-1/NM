@@ -21,7 +21,6 @@ std::pair<double, uint64_t> Newton (double x, double approx, double (*function)(
     return {x2, count};
 }
 
-
 bool checkSI (double a, double b, double (*function)(double), double q) {
     double e = findEpsillon(), x = a;
     while (x + e < b) {

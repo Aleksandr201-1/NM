@@ -63,9 +63,9 @@ int main () {
         for (uint64_t j = 0; j < ans1[i].size(); ++j) {
             //mistake[i][j] = std::abs(ans[i][j] - check({j *xh, i * th}));
             //mistakeSum += mistake[i][j];
-            mistakeSum1 += std::abs(ans1[i][j] - check({j *xh, i * th}));
-            mistakeSum2 += std::abs(ans2[i][j] - check({j *xh, i * th}));
-            mistakeSum3 += std::abs(ans3[i][j] - check({j *xh, i * th}));
+            mistakeSum1 += std::abs(ans1[i][j] - check({j * xh, i * th}));
+            mistakeSum2 += std::abs(ans2[i][j] - check({j * xh, i * th}));
+            mistakeSum3 += std::abs(ans3[i][j] - check({j * xh, i * th}));
         }
     }
     // std::cout << "Наша функция:\n";

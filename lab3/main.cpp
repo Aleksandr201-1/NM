@@ -126,6 +126,7 @@ int main () {
         //std::cout << NewtonFunc(X, N, check) << " " << to_poly(check) << "\n";
         std::cout << "\nПогрешность Лагранжа: " << std::abs(LagrangeFunc(X, L, check) - to_poly(check)) << "\n";
         std::cout << "\nПогрешность Ньютона: " << std::abs(NewtonFunc(X, N, check) - to_poly(check)) << "\n";
+        plot({printNewton(N, X), printLagrange(L, X)}, {});
     }
     //3.2
     std::cout << "=====3.2=====\n";
@@ -196,7 +197,7 @@ int main () {
     }
     plot({LSMToText(ann1), LSMToText(ann2), LSMToText(ann3)}, points);
 
-    // //3.4
+    //3.4
     std::cout << "\n=====3.4=====\n";
     std::cout << "Введите размер векторов и векторы:\n";
     std::cin >> n;
@@ -217,7 +218,7 @@ int main () {
     std::cout << "Производная 1: " << derirative1(X, Y, 1.4) << "\n";
     std::cout << "Производная 2: " << derirative2(X, Y, 1.4) << "\n";
 
-    // //3.5
+    //3.5
     std::cout << "=====3.5=====\n";
     std::cout << "Введите функцию:\n";
     std::cin.ignore();
