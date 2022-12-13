@@ -32,25 +32,31 @@ int main () {
 
     std::vector<std::string> system;
     std::string str;
-    double xh, th, a, c;
+    double xh, th;
     std::pair<std::vector<double>, std::vector<double>> res1, res2;
     Task task;
-    FunctionalTree check;
+    FunctionalTree check;//("uxx + sin(3.14 * x)", {"uxx", "ux", "u", "x"});
+    //check.printTree();
 
     std::cout << "=====5.1=====\n";
     std::cout << "Введите начально-краевую задачу:\n";
 
+    str = readLine();
+    system.push_back(str);
     for (uint64_t i = 0; i < 3; ++i) {
         str = readLine();
         system.push_back(str);
     }
+    for (uint64_t i = 0; i < system.size(); ++i) {
+        std::cout << i << ": " << system[i] << "\n";
+    }
     std::cout << "Введите размер шага для \"x\" и для \"t\":\n";
     std::cin >> xh >> th;
-    std::cout << "Введите значение параметров \"a\" и \"c\":\n";
-    std::cin >> a >> c;
+    //std::cout << "Введите значение параметров \"a\" и \"c\":\n";
+    //std::cin >> a >> c;
     std::cout << "Введите функцию для сравнения:\n";
     str = readLine();
-    task = getTaskInfo(system, a, c);
+    task = getTaskInfo(system);
     //std::vector<std::vector<double>> ans;//, mistake;
 
     auto ans1 = SolveIBVP(task, xh, th, Method::EXPLICIT);
@@ -58,14 +64,15 @@ int main () {
     auto ans3 = SolveIBVP(task, xh, th, Method::KRANK_NICOLAS);
     //auto mistake = ans;
     double mistakeSum1 = 0, mistakeSum2 = 0, mistakeSum3 = 0;
+    double X0 = task.X[0];
     check.reset(str, {"x", "t"});
     for (uint64_t i = 0; i < ans1.size(); ++i) {
         for (uint64_t j = 0; j < ans1[i].size(); ++j) {
             //mistake[i][j] = std::abs(ans[i][j] - check({j *xh, i * th}));
             //mistakeSum += mistake[i][j];
-            mistakeSum1 += std::abs(ans1[i][j] - check({j * xh, i * th}));
-            mistakeSum2 += std::abs(ans2[i][j] - check({j * xh, i * th}));
-            mistakeSum3 += std::abs(ans3[i][j] - check({j * xh, i * th}));
+            mistakeSum1 += std::abs(ans1[i][j] - check({X0 + j * xh, i * th}));
+            mistakeSum2 += std::abs(ans2[i][j] - check({X0 + j * xh, i * th}));
+            mistakeSum3 += std::abs(ans3[i][j] - check({X0 + j * xh, i * th}));
         }
     }
     // std::cout << "Наша функция:\n";

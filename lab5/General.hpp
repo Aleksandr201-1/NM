@@ -12,8 +12,9 @@
 
 struct Task {
     std::vector<FunctionalTree> trees;
-    double X1, X2;
-    double a, c;
+    //double X1, X2;
+    //double a, c;
+    std::vector<double> coeff, X;
     uint64_t leftKind, rightKind;
 };
 
@@ -32,7 +33,7 @@ std::string toString (double val, uint64_t precision);
 
 double stringFix (std::string &str);
 
-Task getTaskInfo(const std::vector<std::string> &system, double a, double c);
+Task getTaskInfo(const std::vector<std::string> &system);
 
 std::string readLine ();
 

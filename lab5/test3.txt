@@ -1,9 +1,8 @@
+ut = 3 * uxx
 u(0) = exp(-t)
 u(3.14) = 0-exp(-t)
 u(0) = cos(x)
 
-0.2 0.01
+0.1 0.001
 
-1 1
-
-exp(-t) * cos(x)
+exp(0 - 3*t) * cos(x)

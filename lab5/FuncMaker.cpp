@@ -163,7 +163,7 @@ double FunctionalTree::useOperation (Operation op, double x, double y) const {
         case Operation::ATAN:
             return std::atan(y);
         case Operation::ACOT:
-            return M_PI_2 -  std::atan(y);
+            return std::acos(-1) / 2 -  std::atan(y);
         case Operation::LOG:
             return std::log10(y);
         case Operation::LN:
@@ -504,6 +504,14 @@ FunctionalTree FunctionalTree::getCoeff (uint64_t idx) const {
     //     auto n = (VariableNode *) tmp->right.get();
     // }
     // return FunctionalTree(tmp->right->left);
+}
+
+FunctionalTree FunctionalTree::getDiv () const {
+    if (root->type == NodeType::OPERATION) {
+        return FunctionalTree(root->right);
+    } else {
+        return FunctionalTree();
+    }
 }
 
 void FunctionalTree::printTree () const {

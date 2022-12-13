@@ -7,14 +7,28 @@
 #include <cmath>
 #include <memory>
 #include <algorithm>
+#include <functional>
 #include <iostream>
 
+// struct OperationStruct {
+//     std::vector<std::string> op_str;
+//     std::function<double (double, double)> func;
+//     Operation op;
+// };
+
+// const std::vector<OperationStruct> operations = {
+//     {{"+"}, [] (double x, double y) {return x + y;}, Operation::PLUS},
+//     {{"-"}, [] (double x, double y) {return x - y;}, Operation::MINUS},
+//     {{"*"}, [] (double x, double y) {return x * y;}, Operation::MUL},
+//     {{"/"}, [] (double x, double y) {return x / y;}, Operation::DIV}
+// };
+
 //PRIORITY
-//val,() 0
-//^ 1
-//sin,cos,... 2
-//*,/,% 3
-//+- 4
+//val, ()       0
+//^             1
+//sin, cos, ... 2
+//*, /, %       3
+//+, -          4
 enum class NodeType {
     OPERATION,
     VALUE,
@@ -27,16 +41,16 @@ enum class Operation {
     MUL,    // *
     DIV,    // /
     MOD,    // %
-    POW,    // ^
+    POW,    // ^, **
     SQRT,   // sqrt
     SIN,    // sin
     COS,    // cos
     TAN,    // tg
     CTG,    // ctg
-    ASIN, //arcsin
-    ACOS, //arccos
-    ATAN,  //arctg
-    ACOT, //arcctg
+    ASIN,   // arcsin
+    ACOS,   // arccos
+    ATAN,   // arctg
+    ACOT,   // arcctg
     LOG,    // log_10
     LN,     // log_e, ln
     EXP,    // exp
@@ -116,13 +130,14 @@ class FunctionalTree {
         double func (double x) const;
         double func (const std::vector<double> &X) const;
         FunctionalTree getCoeff (uint64_t idx) const;
+        FunctionalTree getDiv () const;
         void printTree () const;
         void printFunc () const;
         //void simplify ();
         FunctionalTree &operator= (const FunctionalTree &tree);
+        FunctionalTree &operator= (FunctionalTree &&tree);
         double operator() (double x) const;
         double operator() (const std::vector<double> &X) const;
-        FunctionalTree &operator= (FunctionalTree &&tree);
     private:
         static const std::vector<std::string> operations;
         static const uint64_t VARIABLE_LIMIT = 5;
