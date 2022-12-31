@@ -4,18 +4,40 @@
 #include "General.hpp"
 #include "RUN.hpp"
 
+//методы: явный, неявный и Кранка-Николаса
 enum class Method {
     EXPLICIT,
     NOT_EXPLICIT,
     KRANK_NICOLAS
 };
 
-enum class ApproxLevel {
-    POINT2_ORDER1,
-    POINT3_ORDER2,
-    POINT2_ORDER2
+enum class SIDE {
+    LEFT,
+    RIGHT
 };
 
-std::vector<std::vector<double>> SolveIBVP (const Task &task, double xh, double th, Method method);
+//аппроксимация
+enum class ApproxLevel {
+    POINT2_ORDER1, //двухточечная первого порядка
+    POINT2_ORDER2, //двухточечная второго порядка
+    POINT3_ORDER2, //трёхточечная второго порядка
+    NONE
+};
+
+/**
+    * \brief Функция решения краевой задачи. Принимает следующие аргументы
+    *
+    *   
+    * \param task Структура, содержащая задачу.
+    * \param timeLimit Верхний предел времени.
+    * \param xh Размер шага для X.
+    * \param th Размер шага для T.
+    * \param method Метод решения краевой задачи.
+    * \param approx Метод аппроксимации производной.
+    * 
+    * \return Таблица функции U(x, t)
+    *
+**/
+std::vector<std::vector<double>> SolveIBVP (const Task &task, double timeLimit, double xh, double th, Method method, ApproxLevel approx);
 
 #endif

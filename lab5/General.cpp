@@ -29,9 +29,8 @@ std::string toString (double val, uint64_t precision) {
 
 double stringFix (std::string &str) {
     double val = 0;
-    std::string tmp(str);
-    str = "";
-    //str.erase(0, 1);
+    std::string tmp;
+    std::swap(tmp, str);
     for (uint64_t i = 0; i < tmp.size(); ++i) {
         if (tmp[i] == 'u') {
             std::string valStr;
@@ -52,64 +51,43 @@ double stringFix (std::string &str) {
     return val;
 }
 
-// std::tuple<uint64_t, double, uint64_t> getStrInfo (const std::string &str) {
-//     uint64_t i = 0, j = 0;
-//     while (1) {
-
-//     }
-//     return std::make_tuple(1, 1.0, 1);
-// }
-
 Task getTaskInfo(const std::vector<std::string> &system) {
     uint64_t idx = 0, size = 0;
     std::string tmp;
     Task task;
 
-    //task.trees.resize(4);
     task.X.resize(2);
     task.coeff = std::vector<double>(4, 0);
 
     idx = system[0].find('=');
     size = system[0].size();
-    //tmp = system[0].substr(0, idx);
-    //task.X1 = stringFix(tmp); "ut, uxx, ux, u, x"
-    //std::cout << "func: q" << system[0].substr(idx + 1, size - idx) << "q\n";
-    task.trees.push_back(std::move(FunctionalTree(system[0].substr(idx + 1, size - idx), {"uxx", "ux", "u", "x"})));
-    // task.coeff[0] = task.trees.back().func({1, 0, 0, 0});
-    // task.coeff[1] = task.trees.back().func({0, 1, 0, 0});
-    // task.coeff[2] = task.trees.back().func({0, 0, 1, 0});
-    task.coeff[0] = task.trees[0].getCoeff(0).func(0);
-    task.coeff[1] = task.trees[0].getCoeff(1).func(0);
-    task.coeff[2] = task.trees[0].getCoeff(2).func(0);
-    //task.trees[0].printTree();
-    // for (uint64_t i = 0; i < 3; ++i) {
-    //     //task.coeff.push_back(task.trees.back().func({1, 0, 0, 0}));
-    //     std::cout << "coeff = " << task.coeff[i] << "\n";
-    //     std::cout << "real = " << task.trees[0].getCoeff(i).func(0) << "\n";
-    //     //std::cout << "real = ";
-    //     //task.trees[0].printFunc();
-    // }
-    for (uint64_t i = 1; i < 3; ++i) {
+    task.trees.push_back(std::move(FunctionalTree(system[0].substr(idx + 1, size - idx), {"uxx", "ux", "u", "x", "t"}))); //записываем правую часть уравнения
+    task.coeff[0] = task.trees[0].getCoeff(0).func(0);//коэффициент при uxx
+    task.coeff[1] = task.trees[0].getCoeff(1).func(0);//коэффициент при ux
+    task.coeff[2] = task.trees[0].getCoeff(2).func(0);//коэффициент при u
+
+    for (uint64_t i = 1; i < 3; ++i) { //записываем краевые условия
+        FunctionalTree tmpTree;
         idx = system[i].find('=');
         size = system[i].size();
         tmp = system[i].substr(0, idx);
         task.X[i - 1] = stringFix(tmp);
+
+        tmpTree.reset(tmp, {"ux", "u"});
+        task.ux.push_back({tmpTree.getCoeff(0).func(0), tmpTree.getCoeff(1).func(0)});
         task.trees.push_back(std::move(FunctionalTree(system[i].substr(idx + 1, size - idx), {"t"})));
     }
+    //записываем условие в начальный момент времени
     idx = system[3].find('=');
     size = system[3].size();
     tmp = system[3].substr(0, idx);
     task.trees.push_back(std::move(FunctionalTree(system[3].substr(idx + 1, size - idx), {"x"})));
 
-    // for (uint64_t i = 0; i < 3; ++i) {
-    //     idx = system[i].find('=');
-    //     size = system[i].size();
-    //     tmp = system[i].substr(0, idx);
-    //     task.trees.push_back(std::move(FunctionalTree(system[i].substr(idx + 1, size - idx), {"t"})));
-    // }
     return task;
 }
 
+
+//функция чтения строки целиком и игнорирования строк, начинающихся с '#'
 std::string readLine () {
     std::string str;
     while (str.empty()) {

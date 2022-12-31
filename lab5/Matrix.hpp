@@ -10,6 +10,8 @@ struct MatrixSize {
     uint64_t n, m;
 };
 
+
+//класс матрицы
 template <class T>
 class Matrix {
     public:
