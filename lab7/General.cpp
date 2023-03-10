@@ -63,9 +63,12 @@ Task getTaskInfo(const std::vector<std::string> &system) {
     idx = system[0].find('=');
     size = system[0].size();
     task.trees.push_back(std::move(FunctionalTree(system[0].substr(idx + 1, size - idx), {"ux", "uy", "u", "x", "y"})));
-    task.coeff[0] = task.trees[0].getCoeff(0).func(0);
-    task.coeff[1] = task.trees[0].getCoeff(1).func(0);
-    task.coeff[2] = task.trees[0].getCoeff(2).func(0);
+    for (uint64_t i = 0; i < task.coeff.size() - 1; ++i) {
+        task.coeff[i] = task.trees[0].getCoeff(i).func(0);
+    }
+    // task.coeff[0] = task.trees[0].getCoeff(0).func(0);
+    // task.coeff[1] = task.trees[0].getCoeff(1).func(0);
+    // task.coeff[2] = task.trees[0].getCoeff(2).func(0);
 
     for (uint64_t i = 1; i < 3; ++i) {
         FunctionalTree tmpTree;

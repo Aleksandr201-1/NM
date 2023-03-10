@@ -10,27 +10,6 @@
 #include <functional>
 #include <iostream>
 
-// TODO:
-// - исправить унарный оператор
-// - добавить числовые константы
-// - улучшить нахождение коэффициентов
-// - улучшить печать функции
-// - добавить конвертацию в массив
-// - изменить формат добавления новых функций и их аналогов
-
-// struct OperationStruct {
-//     std::vector<std::string> op_str;
-//     std::function<double (double, double)> func;
-//     Operation op;
-// };
-
-// const std::vector<OperationStruct> operations = {
-//     {{"+"}, [] (double x, double y) {return x + y;}, Operation::PLUS},
-//     {{"-"}, [] (double x, double y) {return x - y;}, Operation::MINUS},
-//     {{"*"}, [] (double x, double y) {return x * y;}, Operation::MUL},
-//     {{"/"}, [] (double x, double y) {return x / y;}, Operation::DIV}
-// };
-
 //PRIORITY
 //val, ()       0
 //^             1

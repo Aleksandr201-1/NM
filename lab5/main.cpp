@@ -4,7 +4,7 @@ int main () {
     std::cout.precision(PRECISION);
     std::cout.setf(std::ios_base::fixed);
 
-    const double TIME_LIMIT = 10; //ограничение по времени от 0 до 1 секунды
+    const double TIME_LIMIT = 10; //ограничение по времени от 0 до 10 секунд
     std::vector<std::string> system;
     std::string str;
     double xh, th;
@@ -63,10 +63,6 @@ int main () {
         std::cout << "Средняя погрешность неявного метода: " << mistakeSum2 / S << "\n";
         std::cout << "Средняя погрешность метода Кранка-Николаса: " << mistakeSum3 / S << "\n";
     }
-    // double x, t;
-    // while (std::cin >> x >> t) {
-    //     std::cout << "U(" << x << ", " << t << ") = " << check({x, t}) << "\n";
-    // }
 
     return 0;
 }

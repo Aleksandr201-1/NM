@@ -10,9 +10,11 @@ enum class Method {
     LIBMAN
 };
 
-enum class SIDE {
+enum SIDE {
     LEFT,
-    RIGHT
+    RIGHT,
+    DOWN,
+    UP
 };
 
 enum class ApproxLevel {

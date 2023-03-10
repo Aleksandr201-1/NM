@@ -43,10 +43,10 @@ std::vector<double> SISolveSLAE (const Matrix<T> &matrix, const std::vector<T> &
     Matrix<T> alpha(n, n);
 
     if (!matrix.isSquare() || n != b.size()) {
-        return;
+        return {};
     }
     if (n != b.size()) {
-        return;
+        return {};
     }
 
     for (uint64_t i = 0; i < n; ++i) {

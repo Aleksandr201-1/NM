@@ -59,7 +59,6 @@ void FiniteDifferenceExplicitApprox (std::vector<std::vector<double>> &u, double
     }
 }
 
-
 /**
     * \brief Функция одной итерации для неявно-явной схемы
     *
